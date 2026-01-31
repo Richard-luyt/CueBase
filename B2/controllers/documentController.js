@@ -2,10 +2,7 @@ import Document from "./../models/Document.js";
 import "dotenv/config";
 import { GoogleGenAI } from "@google/genai";
 
-const app = express();
-app.use(express.json());
-
-exports.createDocument = async (req, res) => {
+export const createDocument = async (req, res) => {
     try {
         const ai = new GoogleGenAI({apiKey : process.env.GEMINI_API_KEY});
         const response = await ai.models.embedContent({
@@ -35,23 +32,43 @@ exports.createDocument = async (req, res) => {
     
 }
 
-exports.deleteDocument = (req, res) => {
-
+export const deleteDocument = async (req, res) => {
+    try {
+        const find = await Document.deleteMany({
+            "User" : req.body.userID, 
+            "FileName" : req.body.FileName,
+        });
+        if (find.deletedCount == 0) {
+            console.log("Can't find the document to delete");
+            return res.status(404).json({
+                status: "fail",
+            })
+        }
+        console.log("Chunk of files deleted");
+        return res.status(200).json({
+            status: "success",
+        })
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({
+            status : "fail",
+        })
+    }
 }
 
-exports.getDocument = async (req, res) => {
+export const getDocument = async (req, res) => {
     try {
         const results = await Document.aggregate([
             {
                 "$vectorSearch": {
-                "index": "Embedding",
-                "path": "Embedding",
-                "queryVector": req.body.embedding,
-                "filter": {
-                    "User": { "$eq": new mongoose.Types.ObjectId(req.body.userID)}
-                },
-                "numCandidates": 100,
-                "limit": 5
+                    "index": "Embedding",
+                    "path": "Embedding",
+                    "queryVector": req.body.embedding,
+                    "filter": {
+                        "User": { "$eq": new mongoose.Types.ObjectId(req.body.userID)}
+                    },
+                    "numCandidates": 100,
+                    "limit": 5
                 }
             },
         ]);

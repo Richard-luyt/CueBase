@@ -8,6 +8,7 @@ const documentSchema = new mongoose.Schema({
     },
     Content:{
         type: String,
+        maxlength : 2000,
     },
     FileName:{
         type: String,
