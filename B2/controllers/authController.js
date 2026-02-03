@@ -1,4 +1,4 @@
-import User from "../models/User"
+import User from "../models/User.js"
 
 //used for signup, login, logout, and reset password
 
