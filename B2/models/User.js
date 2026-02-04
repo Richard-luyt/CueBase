@@ -20,6 +20,7 @@ const UserSchema = new mongoose.Schema({
         required: true,
         unique: true,
         minlength: 8,
+        select: false,
     },
     photo: {
         type: String,
@@ -47,6 +48,10 @@ UserSchema.pre('save', async function(next) {
     this.passwordConfirm = undefined;
     next();
 });
+
+UserSchema.methods.correctPassword = async function(candidatePassword, targetPassword) {
+    return await bcrypt.compare(candidatePassword,targetPassword);
+}
 
 
 const User = mongoose.model('User', UserSchema);
