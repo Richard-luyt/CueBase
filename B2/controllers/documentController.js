@@ -8,24 +8,35 @@ export const createDocument = async (req, res) => {
         const response = await ai.models.embedContent({
             model: 'gemini-embedding-001',
             contents: req.body.Content,
-            taskType: 'RETRIEVAL_DOCUMENT',
             outputDimensionality: 768,
+            taskType: 'RETRIEVAL_DOCUMENT',
         });
+        console.log(response);
+        const finalEmbedding = response.embeddings[0].values.slice(0, 768);
         const newReq = {
-            User : req.body.User,
+            User : req.User._id,
             Content : req.body.Content,
             FileName : req.body.FileName,
             PageNumber :  req.body.PageNumber,
-            Embedding : response.embeddings[0].values,
+            Embedding : finalEmbedding,
         };
+        //console.log("newReq");
         // const newReq = await Object.assign({Embedding: response}, req.body);
-        const Create = await Document.create(newReq);
-        res.status(201).json({
-            status: "success",
-        })
+        try {
+            const Create = await Document.create(newReq);
+            res.status(201).json({
+                status: "success",
+            })
+        } catch (err) {
+            res.status(400).json({
+                status: "failed",
+                message : err,
+            })
+        }
+        
     } catch (err) {
         console.log(err);
-        res.status(400).json({
+        return res.status(400).json({
             status: "fail",
         })
     }
@@ -35,7 +46,7 @@ export const createDocument = async (req, res) => {
 export const deleteDocument = async (req, res) => {
     try {
         const find = await Document.deleteMany({
-            "User" : req.body.userID, 
+            "User" : req.User._id, 
             "FileName" : req.body.FileName,
         });
         if (find.deletedCount == 0) {
@@ -50,7 +61,7 @@ export const deleteDocument = async (req, res) => {
         })
     } catch (err) {
         console.log(err);
-        res.status(400).json({
+        return res.status(400).json({
             status : "fail",
         })
     }
@@ -65,14 +76,14 @@ export const getDocument = async (req, res) => {
                     "path": "Embedding",
                     "queryVector": req.body.embedding,
                     "filter": {
-                        "User": { "$eq": new mongoose.Types.ObjectId(req.body.userID)}
+                        "User": { "$eq": new mongoose.Types.ObjectId(req.User._id,)}
                     },
                     "numCandidates": 100,
                     "limit": 5
                 }
             },
         ]);
-        res.status(200).json({
+        return res.status(200).json({
             status : "success",
             data : {
                 results
