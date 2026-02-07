@@ -3,6 +3,8 @@ import JWT from "jsonwebtoken"
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv"
 import {promisify} from "util";
+import { unwatchFile } from "fs";
+import {sendEmail} from "../middlewares/email.js"
 
 //used for signup, login, logout, and reset password
 
@@ -34,6 +36,7 @@ export const protect = async (req, res, next) => {
             })
         }
         req.User = freshuser;
+        next();
     } catch (err) {
         return res.status(401).json({
             status: "failed",
@@ -43,6 +46,22 @@ export const protect = async (req, res, next) => {
     //check if user changed password after the token was issued
 
     next();
+}
+
+export const restrictTo = (...roles) => {
+    return async (req, res, next) => {
+        const user = await User.findById(req.User._id);
+        if(!roles) {
+            next();
+        }
+        if(!roles.includes(user.role)) {
+            return res.status(403).json({
+                status: "failed",
+                message: "permission denied",
+            })
+        }
+        next();
+    }
 }
 
 export const signup = async(req, res, next) => {
@@ -103,5 +122,43 @@ export const logout = async(req, res, next) => {
 }
 
 export const forgetPassword = async(req, res, next) => {
+    //console.log("OK");
+    const email = req.body.email;
+    const user = await User.findOne({email : email});
+    if (!user) {
+        return res.status(404).json({
+            status: "failed",
+            message : "Can't find user",
+        })
+    }
+    try{
+        const code = await user.createPasswordResetToken();
+        await user.save({validateBeforeSave: false});
+        const resetURL = `${req.protocol}://${req.get('host')}/api/users/resetPassword/${code}`
+        const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to ${resetURL}`
+        await sendEmail({
+            email : user.email,
+            subject: "Your password reset token",
+            message: message,
+        });
+        res.status(200).json({
+            status: "success",
+            message: "Token sent to email!",
+            token : code,
+        });
+        
+    } catch(err) {
+        user.passwordResetToken = undefined;
+        user.passwordResetExpires = undefined;
+        await user.save({validateBeforeSave: false});
+        return res.status(500).json({
+            status: "error",
+            message: err
+        });
+    }
+    
+}
 
+export const resetPassword = async(req, res, next) => {
+    next();
 }
