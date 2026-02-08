@@ -5,6 +5,7 @@ import dotenv from "dotenv"
 import {promisify} from "util";
 import { unwatchFile } from "fs";
 import {sendEmail} from "../middlewares/email.js"
+import crypto from "crypto";
 
 //used for signup, login, logout, and reset password
 
@@ -160,5 +161,39 @@ export const forgetPassword = async(req, res, next) => {
 }
 
 export const resetPassword = async(req, res, next) => {
-    next();
+    const code = crypto.createHash('sha256').update(req.params.token).digest("hex");
+    const user = await User.findOne({passwordResetToken : code});
+    if (!user) {
+        return res.status(400).json({
+            status: "error",
+            message: "can not find the user!"
+        });
+    }
+    if (Date.now() > user.passwordResetExpires) {
+        return res.status(400).json({
+            status: "error",
+            message: "the token expired! please try again later"
+        });
+    }
+    try {
+        user.password = req.body.password;
+        user.passwordConfirm = req.body.passwordConfirm;
+        user.passwordResetToken = undefined;
+        user.passwordResetExpires = undefined;
+        user.passwordChangeAt = Date.now();
+        await user.save();
+        const token = JWT.sign({id : user._id}, process.env.JWT_STRING, {
+            expiresIn: process.env.JWT_EXPIRES
+        });
+        return res.status(201).json({
+            status: "success",
+            token : token,
+        });
+    } catch(err) {
+        return res.status(400).json({
+            status: "error",
+            message: err,
+        });
+    }
+
 }
