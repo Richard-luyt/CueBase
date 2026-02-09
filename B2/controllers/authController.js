@@ -20,7 +20,6 @@ export const protect = async (req, res, next) => {
             message: "please login",
         })
     }
-
     try {
         const decoded = await promisify(JWT.verify)(token, process.env.JWT_STRING);
         const freshuser = await User.findById(decoded.id);
@@ -45,8 +44,6 @@ export const protect = async (req, res, next) => {
         })
     }
     //check if user changed password after the token was issued
-
-    next();
 }
 
 export const restrictTo = (...roles) => {
@@ -98,7 +95,7 @@ export const login = async(req, res, next) => {
         next();
     }
     const user = await User.findOne({email : email}).select('+password');
-    const match = user.correctPassword(password, user.password);
+    const match = await user.correctPassword(password, user.password);
 
     if (!user || !match) {
         return res.status(401).json({
@@ -180,7 +177,6 @@ export const resetPassword = async(req, res, next) => {
         user.passwordConfirm = req.body.passwordConfirm;
         user.passwordResetToken = undefined;
         user.passwordResetExpires = undefined;
-        user.passwordChangeAt = Date.now();
         await user.save();
         const token = JWT.sign({id : user._id}, process.env.JWT_STRING, {
             expiresIn: process.env.JWT_EXPIRES
@@ -195,5 +191,36 @@ export const resetPassword = async(req, res, next) => {
             message: err,
         });
     }
+}
 
+export const updatePassword = async(req, res, next) => {
+    //console.log("yes");
+    const user = await User.findById(req.User._id).select('+password');
+    if (!user) {
+        return res.status(400).json({
+            status: "failed",
+            message: "Can't find the user",
+        })
+    }
+    //console.log(req.body.password);
+    //console.log(user.password);
+    const isCorrect = await user.correctPassword(req.body.password, user.password);
+    //console.log(isCorrect);
+    if(!isCorrect) {
+        //console.log("yes");
+        return res.status(401).json({
+            status : "failed",
+            message : "the orginal password is not correct!",
+        });
+    }
+    user.password = req.body.passwordCurrent;
+    user.passwordConfirm = req.body.passwordConfirm;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    //console.log("yes");
+    await user.save();
+    return res.status(200).json({
+        status : "success",
+        message : "password updated",
+    })
 }
