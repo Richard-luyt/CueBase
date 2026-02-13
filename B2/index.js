@@ -3,7 +3,9 @@ import dotenv from "dotenv";
 import express from "express";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js"
+import documentRoutes from "./routes/documentRoutes.js"
 import cors from "cors";
+import myCar from "./models/Test.js"
 
 dotenv.config();
 connectDB();
@@ -36,8 +38,9 @@ app.get('/', (req, res) => {
     res.send('CueBase running');
 })
 
+
 app.use('/api/users', userRoutes);
-//app.use('/api/upload', documentRoutes);
+app.use('/api/doc', documentRoutes);
 
 app.listen(Port, () => {
     console.log(`Server Running ${Port}`);
