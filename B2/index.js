@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js"
 import documentRoutes from "./routes/documentRoutes.js"
 import cors from "cors";
+import myCar from "./models/Test.js"
 
 dotenv.config();
 connectDB();

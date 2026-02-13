@@ -181,7 +181,7 @@ export const resetPassword = async(req, res, next) => {
         const token = JWT.sign({id : user._id}, process.env.JWT_STRING, {
             expiresIn: process.env.JWT_EXPIRES
         });
-        return res.status(201).json({
+        return res.status(200).json({
             status: "success",
             token : token,
         });
