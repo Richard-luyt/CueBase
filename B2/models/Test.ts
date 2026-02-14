@@ -8,5 +8,5 @@ const myCar: Car = {
   hp: 200
 };
 
-console.log("TypeScript works!", myCar);
+//console.log("TypeScript works!", myCar);
 export default myCar;
