@@ -2,10 +2,15 @@ import http from "http";
 import dotenv from "dotenv";
 import express from "express";
 import connectDB from "./config/db.js";
-import userRoutes from "./routes/userRoutes.js"
-import documentRoutes from "./routes/documentRoutes.js"
+import userRoutes from "./routes/userRoutes.js";
+import documentRoutes from "./routes/documentRoutes.js";
+import helmet from "helmet";
 import cors from "cors";
-import myCar from "./models/Test.js"
+import rateLimit from "express-rate-limit";
+import myCar from "./models/Test.js";
+import xssClean from "xss-clean";
+import mongoSanitize from "express-mongo-sanitize";
+import hpp from "hpp";
 
 dotenv.config();
 connectDB();
@@ -13,36 +18,39 @@ connectDB();
 const app = express();
 const Port = 8000;
 
-app.use(cors()); 
-app.use(express.json());
+app.use(helmet());
 
-// const run_test = async() => {
-//     const testUser = new User({
-//         Username: "test01",
-//         UserID: "000001",
-//         email: "luyetian215@gmail.com",
-//     })
+// ------ could upgrade to Redis --------
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: "Too Many requests from this IP, please try again in an hour",
+});
+app.use("/api", limiter);
 
-//     testUser.save().then((doc) => {
-//         console.log(doc);
-//     }).catch(err => {
-//         console.log(err);
-//     })
-// }
+const loginLimiter = rateLimit({
+  max: 7,
+  windowMs: 10 * 60 * 1000,
+  message: "Too Many login requests, please try after 10 minutes",
+});
+app.use("/api/users/login", loginLimiter);
+// --------------------------------------
 
-// if (process.env.NODE_ENV !== 'production') {
-//     setTimeout(runTest, 2000);
-// }
+app.use(cors());
+app.use(express.json({ limit: "10kb" }));
 
-app.get('/', (req, res) => {
-    res.send('CueBase running');
-})
+// Data sanitization
+app.use(mongoSanitize());
+app.use(xssClean());
+app.use(hpp());
 
+app.get("/", (req, res) => {
+  res.send("CueBase running");
+});
 
-app.use('/api/users', userRoutes);
-app.use('/api/doc', documentRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/doc", documentRoutes);
 
 app.listen(Port, () => {
-    console.log(`Server Running ${Port}`);
-})
-
+  console.log(`Server Running ${Port}`);
+});

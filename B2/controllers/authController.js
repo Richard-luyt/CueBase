@@ -91,10 +91,14 @@ export const signup = async (req, res, next) => {
   }
 
   res.cookie("jwt", token, cookieOptions);
+  user.password = undefined;
 
   return res.status(201).json({
     status: "success",
     token: token,
+    data: {
+      user,
+    },
   });
 };
 
@@ -132,10 +136,14 @@ export const login = async (req, res, next) => {
   }
 
   res.cookie("jwt", token, cookieOptions);
+  user.password = undefined;
 
   return res.status(201).json({
     status: "success",
     token: token,
+    data: {
+      user,
+    },
   });
 };
 
