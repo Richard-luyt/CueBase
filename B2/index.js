@@ -7,7 +7,6 @@ import documentRoutes from "./routes/documentRoutes.js";
 import helmet from "helmet";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
-import myCar from "./models/Test.js";
 import xssClean from "xss-clean";
 import mongoSanitize from "express-mongo-sanitize";
 import hpp from "hpp";
@@ -40,9 +39,9 @@ app.use(cors());
 app.use(express.json({ limit: "10kb" }));
 
 // Data sanitization
-app.use(mongoSanitize());
-app.use(xssClean());
-app.use(hpp());
+//app.use(mongoSanitize());
+//app.use(xssClean());
+//app.use(hpp());
 
 app.get("/", (req, res) => {
   res.send("CueBase running");

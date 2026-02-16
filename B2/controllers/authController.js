@@ -3,7 +3,6 @@ import JWT from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 import { promisify } from "util";
-import { unwatchFile } from "fs";
 import { sendEmail } from "../middlewares/email.js";
 import crypto from "crypto";
 
@@ -32,7 +31,7 @@ export const protect = async (req, res, next) => {
         error: "User is deleted",
       });
     }
-    if (freshuser.changedPassword(decoded.iat) == true) {
+    if (await freshuser.changedPassword(decoded.iat) == true) {
       return res.status(401).json({
         status: "failed",
         error: "The user has changed the password",
@@ -81,7 +80,7 @@ export const signup = async (req, res, next) => {
 
   const cookieOptions = {
     expires: new Date(
-      Date.now + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000,
+      Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000,
     ),
     httpOnly: true,
   };
@@ -91,13 +90,14 @@ export const signup = async (req, res, next) => {
   }
 
   res.cookie("jwt", token, cookieOptions);
-  user.password = undefined;
-
+  signup.password = undefined;
+  signup.passwordConfirm = undefined;
+  signup.passwordChangeAt = undefined;
   return res.status(201).json({
     status: "success",
     token: token,
     data: {
-      user,
+      signup,
     },
   });
 };
@@ -112,21 +112,30 @@ export const login = async (req, res, next) => {
     });
   }
   const user = await User.findOne({ email: email }).select("+password");
-  const match = await user.correctPassword(password, user.password);
 
-  if (!user || !match) {
+  if (!user) {
     return res.status(401).json({
       status: "failed",
       message: "Incorrect Email or Password",
     });
   }
+
+  const match = await user.correctPassword(password, user.password);
+
+  if (!match) {
+    return res.status(401).json({
+      status: "failed",
+      message: "Incorrect Email or Password",
+    });
+  }
+  
   const token = JWT.sign({ id: user._id }, process.env.JWT_STRING, {
     expiresIn: process.env.JWT_EXPIRES,
   });
 
   const cookieOptions = {
     expires: new Date(
-      Date.now + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000,
+      Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000,
     ),
     httpOnly: true,
   };

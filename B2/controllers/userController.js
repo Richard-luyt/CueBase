@@ -1,3 +1,4 @@
+import { json } from "stream/consumers";
 import User from "./../models/User.js";
 
 const filterObj = (obj, ...allowedFields) => {
@@ -10,10 +11,22 @@ const filterObj = (obj, ...allowedFields) => {
   return new_obj;
 };
 
-export const fetchUser = async (req, res) => {};
+export const fetchUser = async (req, res) => {
+  return res.status(201).json({
+    status : "success",
+  })
+};
 
 export const deleteMe = async (req, res) => {
-  const user = await User.findById(req.body._id).select("+active");
+  const user = await User.findById(req.User._id).select("+active");
+  if(!user){
+    return res.status(404).json({
+      status:"failed",
+      message:"user not found",
+    })
+  }
+  user.active = false;
+  await user.save();
   return res.status(204).json({
     status: "success",
     data: null,
@@ -45,6 +58,14 @@ export const updateMe = async (req, res) => {
   });
 };
 
-export const getAllUser = async (req, res) => {};
+export const getAllUser = async (req, res) => {
+  return res.status(201).json({
+    status : "success",
+  })
+};
 
-export const getUserProfile = async (req, res) => {};
+export const getUserProfile = async (req, res) => {
+  return res.status(201).json({
+    status : "success",
+  })
+};
