@@ -19,7 +19,6 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    unique: true,
     minlength: 8,
     select: false,
   },
@@ -34,8 +33,8 @@ const UserSchema = new mongoose.Schema({
       validator: function (el) {
         return el === this.password;
       },
+      message: "password doesn't match!",
     },
-    message: "password doesn't match!",
   },
   passwordChangeAt: {
     type: Date,
@@ -75,7 +74,7 @@ UserSchema.pre("save", async function () {
 
 UserSchema.pre(/^find/, async function () {
   // points to current query
-  this.find({ active: { $ne: false } });
+  this.where("active").ne(false);
 });
 
 UserSchema.methods.correctPassword = async function (
