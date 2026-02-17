@@ -1,9 +1,19 @@
-/* ---- App shell ---- */
+/* ---- App shell (light / white background by default) ---- */
 .app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--bg-app, #0f0f12);
+  --bg-app: #ffffff;
+  --bg-header: rgba(255, 255, 255, 0.95);
+  --border: rgba(0, 0, 0, 0.08);
+  --text-primary: #18181b;
+  --text-muted: #71717a;
+  --bg-hover: rgba(0, 0, 0, 0.04);
+  --card-bg: #fff;
+  --accent: #6366f1;
+  --accent-subtle: rgba(99, 102, 241, 0.15);
+  --input-bg: rgba(0, 0, 0, 0.04);
+  background: var(--bg-app);
 }
 
 .header {
@@ -122,7 +132,7 @@
   justify-content: center;
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--text-primary, #fff);
+  color: #fff;
   background: var(--accent, #6366f1);
   border-radius: 50%;
 }
