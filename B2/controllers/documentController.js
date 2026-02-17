@@ -30,10 +30,6 @@ export const deleteDocument = async (req, res) => {
   }
 };
 
-export const queryDocument = async (req, res) => {
-  const requirements = req.body.prompt;
-};
-
 export const getDocument = async (req, res) => {
   try {
     const results = await Document.aggregate([

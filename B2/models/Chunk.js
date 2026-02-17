@@ -6,6 +6,11 @@ const fileChunk = new mongoose.Schema({
     ref: "Document",
     required: [true, "document required"],
   },
+  User: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: [true, "user required"],
+  },
   ChunkIndex: {
     type: Number,
     required: true,
