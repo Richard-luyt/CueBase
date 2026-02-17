@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { register, login, setAuth } from './api';
 import styles from './AuthView.module.css';
+import signinBg from '../images/SigninPage.svg';
 
 export default function AuthView({ onAuth }) {
   const [mode, setMode] = useState('signin'); // 'signin' | 'signup'
@@ -77,9 +78,15 @@ export default function AuthView({ onAuth }) {
   };
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.card}>
-        <h1 className={styles.title}>CueBase</h1>
+    <div className={styles.layout}>
+      <div
+        className={styles.leftPanel}
+        style={{ backgroundImage: `url(${signinBg})` }}
+        aria-hidden="true"
+      />
+      <div className={styles.rightPanel}>
+        <div className={styles.card}>
+          <h1 className={styles.title}>CueBase</h1>
         <div className={styles.tabs}>
           <button
             type="button"
@@ -190,6 +197,7 @@ export default function AuthView({ onAuth }) {
             </button>
           </form>
         )}
+        </div>
       </div>
     </div>
   );

@@ -57,3 +57,13 @@ export async function uploadDocument(file) {
   });
   return data;
 }
+
+/**
+ * Query documents by semantic search (POST /api/doc/queryDoc).
+ * Sends prompt in request body; backend reads req.body.prompt.
+ * Returns { data } with results array (chunks with Content, etc.) when backend sends it.
+ */
+export async function queryDocuments(prompt) {
+  const { data } = await api.post('/doc/queryDoc', { prompt: prompt || '' });
+  return data;
+}

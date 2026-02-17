@@ -5,7 +5,10 @@ import {
 } from "../controllers/documentController.js";
 import { protect } from "../controllers/authController.js";
 import path from "path";
-import { documentParsing } from "../middlewares/documentUploadAndQuery.js";
+import {
+  documentParsing,
+  queryDocument,
+} from "../middlewares/documentUploadAndQuery.js";
 import multer from "multer";
 
 const router = express.Router();
@@ -29,6 +32,7 @@ router.post(
   upload.single("singleFile"),
   documentParsing,
 );
+router.post("/queryDoc", protect, queryDocument);
 router.post("/deleteDoc", protect, deleteDocument);
 router.get("/getDoc", protect, getDocument);
 
