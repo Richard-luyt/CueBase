@@ -1,31 +1,37 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { queryDocuments } from './api';
+import ReactMarkdown from 'react-markdown';
 import styles from './DashboardView.module.css';
 
-export default function QueryPage({ onBack }) {
-  const [queryPrompt, setQueryPrompt] = useState('');
+export default function QueryPage({ onBack, initialPrompt = '' }) {
+  const [queryPrompt, setQueryPrompt] = useState(initialPrompt);
   const [querying, setQuerying] = useState(false);
-  const [results, setResults] = useState(null);
+  const [answer, setAnswer] = useState(null);
   const [error, setError] = useState('');
+  const [strictMode, setStrictMode] = useState(false);
   const queryInputRef = useRef(null);
+
+  useEffect(() => {
+    if (initialPrompt) setQueryPrompt(initialPrompt);
+  }, [initialPrompt]);
 
   const handleQuery = async () => {
     const trimmed = queryPrompt.trim();
     if (!trimmed) {
-      setError('Enter a search prompt.');
+      setError('Enter a question.');
       return;
     }
     setQuerying(true);
-    setResults(null);
+    setAnswer(null);
     setError('');
     try {
-      const data = await queryDocuments(trimmed);
-      const list = data?.data ?? data?.results ?? (Array.isArray(data) ? data : null);
-      setResults(Array.isArray(list) ? list : []);
+      const data = await queryDocuments(trimmed, strictMode ? 'strict' : undefined);
+      const msg = data?.message;
+      setAnswer(typeof msg === 'string' ? msg : (msg != null ? String(msg) : ''));
     } catch (err) {
       const msg = err.response?.data?.message ?? err.response?.data?.error ?? err.message ?? 'Query failed';
       setError(typeof msg === 'string' ? msg : 'Query failed');
-      setResults(null);
+      setAnswer(null);
     } finally {
       setQuerying(false);
     }
@@ -38,7 +44,18 @@ export default function QueryPage({ onBack }) {
       </button>
       <div className={styles.card}>
         <h2 className={styles.cardTitle}>Ask questions</h2>
-        <p className={styles.cardSub}>Search your uploaded documents by meaning (e.g. a question or topic).</p>
+        <p className={styles.cardSub}>Search your documents and get an AI answer. Toggle strict mode to answer only from your knowledge base.</p>
+        <div className={styles.queryModeRow}>
+          <label className={styles.queryModeLabel}>
+            <input
+              type="checkbox"
+              checked={strictMode}
+              onChange={(e) => setStrictMode(e.target.checked)}
+              className={styles.queryModeCheckbox}
+            />
+            Strict mode (answer only from your documents)
+          </label>
+        </div>
         <div className={styles.uploadRow}>
           <input
             ref={queryInputRef}
@@ -46,7 +63,7 @@ export default function QueryPage({ onBack }) {
             value={queryPrompt}
             onChange={(e) => { setQueryPrompt(e.target.value); setError(''); }}
             onKeyDown={(e) => e.key === 'Enter' && handleQuery()}
-            placeholder="Enter your question or topic…"
+            placeholder="Enter your question…"
             className={styles.queryInput}
             disabled={querying}
           />
@@ -56,24 +73,21 @@ export default function QueryPage({ onBack }) {
             disabled={querying || !queryPrompt.trim()}
             className={styles.primaryBtn}
           >
-            {querying ? 'Searching…' : 'Search'}
+            {querying ? 'Asking…' : 'Ask'}
           </button>
         </div>
         {error && <p className={styles.msgError}>{error}</p>}
-        {results !== null && (
+        {answer !== null && answer !== '' && (
           <div className={styles.results}>
-            <h3 className={styles.resultsTitle}>
-              {results.length === 0 ? 'No results' : `Results (${results.length})`}
-            </h3>
-            {results.length > 0 && (
-              <ul className={styles.resultList}>
-                {results.map((item, i) => (
-                  <li key={i} className={styles.resultItem}>
-                    {item.Content ?? item.content ?? JSON.stringify(item)}
-                  </li>
-                ))}
-              </ul>
-            )}
+            <h3 className={styles.resultsTitle}>Answer</h3>
+            <div className={styles.answerBlock}>
+              <ReactMarkdown>{answer}</ReactMarkdown>
+            </div>
+          </div>
+        )}
+        {answer !== null && answer === '' && !error && (
+          <div className={styles.results}>
+            <p className={styles.answerEmpty}>No answer returned.</p>
           </div>
         )}
       </div>

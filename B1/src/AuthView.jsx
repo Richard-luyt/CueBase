@@ -86,7 +86,7 @@ export default function AuthView({ onAuth }) {
       />
       <div className={styles.rightPanel}>
         <div className={styles.card}>
-          <h1 className={styles.title}>CueBase</h1>
+          <h1 className={styles.title}>Welcome!</h1>
         <div className={styles.tabs}>
           <button
             type="button"

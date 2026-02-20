@@ -32,31 +32,23 @@ export const deleteDocument = async (req, res) => {
 
 export const getDocument = async (req, res) => {
   try {
-    const results = await Document.aggregate([
-      {
-        $vectorSearch: {
-          index: "Embedding",
-          path: "Embedding",
-          queryVector: req.body.embedding,
-          filter: {
-            User: { $eq: new mongoose.Types.ObjectId(req.User._id) },
-          },
-          numCandidates: 100,
-          limit: 5,
-        },
-      },
-    ]);
+    const files = await Document.find({User: req.User._id});
+    let fileDetailes = [];
+    for (const entry of files){
+      const singleFile = {
+        UploadTime : entry.UploadTime,
+        FileName : entry.FileName,
+      }
+      fileDetailes.push(singleFile);
+    }
     return res.status(200).json({
-      status: "success",
-      data: {
-        results,
-      },
-    });
+      status : "success",
+      data : fileDetailes,
+    })
   } catch (err) {
-    console.log(err);
-    return res.status(400).json({
-      status: "failed",
-      message: err,
-    });
+    return res.status(404).json({
+      status : "failed",
+      message: "error when retriving files",
+    })
   }
 };
