@@ -8,7 +8,6 @@ const documentSchema = new mongoose.Schema({
   },
   FileName: {
     type: String,
-    unique: true,
   },
   TotalChunkNumber: {
     type: Number,
@@ -17,6 +16,8 @@ const documentSchema = new mongoose.Schema({
     type: Date,
   },
 });
+
+documentSchema.index({ User: 1, FileName: 1 }, { unique: true });
 
 const Document = mongoose.model("Document", documentSchema);
 export default Document;

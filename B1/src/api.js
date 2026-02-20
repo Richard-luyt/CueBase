@@ -59,11 +59,31 @@ export async function uploadDocument(file) {
 }
 
 /**
- * Query documents by semantic search (POST /api/doc/queryDoc).
- * Sends prompt in request body; backend reads req.body.prompt.
- * Returns { data } with results array (chunks with Content, etc.) when backend sends it.
+ * Get current user's documents (GET /api/doc/getDoc).
+ * Returns { status, data } where data is [{ FileName, UploadTime }, ...].
  */
-export async function queryDocuments(prompt) {
-  const { data } = await api.post('/doc/queryDoc', { prompt: prompt || '' });
+export async function getDocuments() {
+  const { data } = await api.get('/doc/getDoc');
+  return data;
+}
+
+/**
+ * Delete a document by name (POST /api/doc/deleteDoc).
+ * Backend expects body: { FileName }.
+ */
+export async function deleteDocument(FileName) {
+  const { data } = await api.post('/doc/deleteDoc', { FileName });
+  return data;
+}
+
+/**
+ * Query documents (POST /api/doc/queryDoc).
+ * Sends { prompt, mode? }. Backend returns { status, message } (AI-generated answer).
+ * mode: "strict" = only from knowledge base; otherwise can supplement with model knowledge.
+ */
+export async function queryDocuments(prompt, mode) {
+  const body = { prompt: prompt || '' };
+  if (mode) body.mode = mode;
+  const { data } = await api.post('/doc/queryDoc', body);
   return data;
 }

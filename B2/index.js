@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
+import teamRoutes from "./routes/teamRoutes.js";
 import documentRoutes from "./routes/documentRoutes.js";
 import helmet from "helmet";
 import cors from "cors";
@@ -49,6 +50,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/users", userRoutes);
 app.use("/api/doc", documentRoutes);
+app.use("/api/team", teamRoutes);
 
 app.listen(Port, () => {
   console.log(`Server Running ${Port}`);
