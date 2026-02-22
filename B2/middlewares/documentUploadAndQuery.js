@@ -151,15 +151,31 @@ export const queryDocument = async (req, res) => {
       }
     }
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_3_KEY });
-    const response = await ai.models.generateContent({
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+    console.log("ok2");
+    const resultStream = await ai.models.generateContentStream({
       model: "gemini-3-flash-preview",
       contents: Prompt,
     });
-    console.log(response.text);
-    return res.status(200).json({
-      status: "success",
-      message: response.text,
-    })
+    for await (const chunk of resultStream) {
+      const chunkText = chunk.text;
+      res.write(`data: ${JSON.stringify({ text: chunkText })}\n\n`);
+    }
+    res.write('data: [DONE]\n\n');
+    res.end();
+    
+    // const response = await ai.models.generateContent({
+    //   model: "gemini-3-flash-preview",
+    //   contents: Prompt,
+    // });
+    // console.log(response.text);
+    // return res.status(200).json({
+    //   status: "success",
+    //   message: response.text,
+    // })
   } catch (err) {
     console.log(err);
     return res.status(400).json({

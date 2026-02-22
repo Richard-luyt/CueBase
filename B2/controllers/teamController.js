@@ -57,7 +57,7 @@ export const getTeam = async (req, res, next) => {
 }
 
 export const addTeamMate = async (req, res, next) => {
-
+    
 }
 
 export const deleteTeamMate = async (req, res, next) => {

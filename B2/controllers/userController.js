@@ -12,9 +12,14 @@ const filterObj = (obj, ...allowedFields) => {
 };
 
 export const fetchUser = async (req, res) => {
-  return res.status(201).json({
-    status : "success",
-  })
+  const user = req.User;
+  if (!user) {
+    return res.status(401).json({ status: "failed", message: "please login" });
+  }
+  return res.status(200).json({
+    status: "success",
+    data: { user },
+  });
 };
 
 export const deleteMe = async (req, res) => {

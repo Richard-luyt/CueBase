@@ -1,4 +1,4 @@
-import express from "express";
+import { Router, type Request } from "express";
 import {
   deleteDocument,
   getDocument,
@@ -9,17 +9,17 @@ import {
   documentParsing,
   queryDocument,
 } from "../middlewares/documentUploadAndQuery.js";
-import multer from "multer";
+import multer, { type StorageEngine } from "multer";
 
-const router = express.Router();
+const router : Router = Router();
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+const storage : StorageEngine = multer.diskStorage({
+  destination: (req : Request, file: Express.Multer.File, cb) => {
     cb(null, "uploads/");
   },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
+  filename: (req : Request, file: Express.Multer.File, cb) => {
+    const ext : string = path.extname(file.originalname);
+    const uniqueName : string =  `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
     cb(null, uniqueName);
   },
 });
