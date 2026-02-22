@@ -1,8 +1,8 @@
-import express from "express";
+import { Router } from "express";
 import { protect } from "../controllers/authController.js";
 import { createTeam, sendInvite, recieveInvites, makeDecision, deleteTeam } from "../controllers/teamController.js";
 
-const router = express.Router();
+const router : Router = Router();
 
 router.post("/createTeam",protect, createTeam);
 router.post("/deleteTeam",protect, deleteTeam);

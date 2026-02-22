@@ -1,13 +1,13 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose, { Schema, model, type InferSchemaType } from "mongoose";
 
-const invitationSchema = new mongoose.Schema({
+const invitationSchema = new Schema({
     team: { 
-        type: mongoose.Schema.Types.ObjectId, 
+        type: Schema.Types.ObjectId, 
         ref: 'Team', 
         required: true 
     },
     inviter: { 
-        type: mongoose.Schema.Types.ObjectId, 
+        type: Schema.Types.ObjectId, 
         ref: 'User', 
         required: true 
     },
@@ -21,7 +21,8 @@ const invitationSchema = new mongoose.Schema({
       default: 'pending' 
     },
     createdAt: { type: Date, default: Date.now, expires: 604800 }
-  });
+});
 
-const TeamInvite = mongoose.model("TeamInvite", invitationSchema);
+export type Iinvite = InferSchemaType<typeof invitationSchema>;
+const TeamInvite = model<Iinvite>("TeamInvite", invitationSchema);
 export default TeamInvite;

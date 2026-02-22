@@ -28,7 +28,7 @@ router.patch("/updatePassword", protect, updatePassword);
 router.get("/", getAllUser);
 router.patch("/updateMe", protect, updateMe);
 router.delete("/delete", protect, deleteMe);
-router.get("/me", fetchUser);
+router.get("/me", protect, fetchUser);
 
 router.get("/:username", getUserProfile);
 

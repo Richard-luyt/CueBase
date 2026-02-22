@@ -1,6 +1,6 @@
 import http from "http";
 import dotenv from "dotenv";
-import express from "express";
+import express, { type Application, type Request, type Response } from "express";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import teamRoutes from "./routes/teamRoutes.js";
@@ -8,15 +8,13 @@ import documentRoutes from "./routes/documentRoutes.js";
 import helmet from "helmet";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
-import xssClean from "xss-clean";
-import mongoSanitize from "express-mongo-sanitize";
-import hpp from "hpp";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 connectDB();
 
-const app = express();
-const Port = 8000;
+const app: Application = express();
+const Port : number = 8000;
 
 app.use(helmet());
 
@@ -36,15 +34,14 @@ const loginLimiter = rateLimit({
 app.use("/api/users/login", loginLimiter);
 // --------------------------------------
 
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true,
+}));
 app.use(express.json({ limit: "10kb" }));
+app.use(cookieParser());
 
-// Data sanitization
-//app.use(mongoSanitize());
-//app.use(xssClean());
-//app.use(hpp());
-
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.send("CueBase running");
 });
 

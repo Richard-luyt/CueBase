@@ -1,24 +1,27 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose, { Schema, model, type InferSchemaType } from "mongoose";
 
-const teamSchema = new mongoose.Schema({
+const teamSchema = new Schema({
     teamName : {
         type: String,
         required : true,
         unique : true,
     },
     teamMembers : {
-        type : [mongoose.Schema.Types.ObjectId],
+        type : [Schema.Types.ObjectId],
     },
     memberNumbers : {
         type : Number,
         default : 1,
     },
     teamOwner : {
-        type : mongoose.Schema.Types.ObjectId,
+        type : Schema.Types.ObjectId,
         required : true,
         ref: 'User', 
     }
 })
 
-const Team = mongoose.model("Team", teamSchema);
+export type Iteam = InferSchemaType<typeof teamSchema>;
+
+const Team = model<Iteam>("Team", teamSchema);
+
 export default Team;

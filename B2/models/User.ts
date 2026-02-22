@@ -1,9 +1,15 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, model, type InferSchemaType, type HydratedDocument, type Query } from "mongoose";
 import validator from "validator";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 
-const UserSchema = new mongoose.Schema({
+interface IUserMethods {
+  correctPassword(candidatePassword: string, targetPassword: string): Promise<boolean>;
+  changedPassword(JWTtimestamp: number): boolean;
+  createPasswordResetToken(): string;
+}
+
+const UserSchema = new Schema({
   Username: {
     type: String,
     required: [true, "Please enter username"],
@@ -30,7 +36,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, "please retype your password"],
     validate: {
-      validator: function (el) {
+      validator: function (this: any, el: string) {
         return el === this.password;
       },
       message: "password doesn't match!",
@@ -61,36 +67,36 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-UserSchema.pre("save", async function () {
+export type IUser = InferSchemaType<typeof UserSchema>;
+
+UserSchema.pre("save", async function (this: HydratedDocument<IUser>) {
   if (!this.isModified("password")) return;
-  this.password = await bcrypt.hash(this.password, 15);
-  this.passwordConfirm = undefined;
+  this.password = await bcrypt.hash(this.password as string, 15);
+  this.passwordConfirm = "";
 });
 
-UserSchema.pre("save", async function () {
+UserSchema.pre("save", async function (this: HydratedDocument<IUser>) {
   if (!this.isModified("password") || this.isNew) return;
-  this.passwordChangeAt = Date.now() - 1000;
+  this.passwordChangeAt = new Date(Date.now() - 1000);
 });
 
-UserSchema.pre(/^find/, async function () {
+UserSchema.pre(/^find/, async function (this: Query<any, any>) {
   // points to current query
   this.where("active").ne(false);
 });
 
 UserSchema.methods.correctPassword = async function (
-  candidatePassword,
-  targetPassword,
-) {
-  const a = await bcrypt.compare(candidatePassword, targetPassword);
-  return a;
+  candidatePassword: string,
+  targetPassword : string,
+):Promise<boolean> {
+  return await bcrypt.compare(candidatePassword, targetPassword);
 };
 
-UserSchema.methods.changedPassword = async function (JWTtimestamp) {
+UserSchema.methods.changedPassword = function (this: HydratedDocument<IUser>,
+  JWTtimestamp: number): boolean {
   if (this.passwordChangeAt) {
-    const changedTimeStamp = parseInt(
-      this.passwordChangeAt.getTime() / 1000,
-      10,
-    );
+    const changedTimeStamp = Math.floor(
+      this.passwordChangeAt.getTime() / 1000);
     //console.log(changedTimeStamp);
     //console.log(JWTtimestamp);
     if (changedTimeStamp > JWTtimestamp) {
@@ -106,15 +112,16 @@ UserSchema.methods.changedPassword = async function (JWTtimestamp) {
   }
 };
 
-UserSchema.methods.createPasswordResetToken = async function () {
+UserSchema.methods.createPasswordResetToken = function (this: HydratedDocument<IUser>): string {
   const resetToken = crypto.randomBytes(32).toString("hex");
   this.passwordResetToken = crypto
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
-  this.passwordResetExpires = Date.now() + 600 * 1000;
+  this.passwordResetExpires = new Date(Date.now() + 600 * 1000);
   return resetToken;
 };
 
-const User = mongoose.model("User", UserSchema);
+const User = model<IUser, mongoose.Model<IUser, {}, IUserMethods>>("User", UserSchema);
+
 export default User;
