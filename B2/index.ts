@@ -29,9 +29,14 @@ const Port : number = 8000;
 
 app.use(helmet());
 
-const allowedOrigin = process.env.CORS_ORIGIN || "http://localhost:3000";
+//const allowedOrigin = process.env.CORS_ORIGIN || "http://localhost:3000";
 app.use(cors({
-  origin: allowedOrigin,
+  origin: [
+    'https://cuebase.online',
+    'https://www.cuebase.online',
+    'http://localhost:3000',
+    'http://localhost:5173',
+  ];,
   credentials: true,
 }));
 app.use(express.json({ limit: "10kb" }));
