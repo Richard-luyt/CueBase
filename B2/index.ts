@@ -26,7 +26,7 @@ connectDB();
 
 const app: Application = express();
 const Port : number = 8000;
-
+app.set('trust proxy', 1);
 app.use(helmet());
 
 //const allowedOrigin = process.env.CORS_ORIGIN || "http://localhost:3000";
