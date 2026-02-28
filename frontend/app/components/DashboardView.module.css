@@ -1,9 +1,24 @@
+<<<<<<< HEAD
+/* ---- App shell: sidebar + main (dark theme #0D1117) ---- */
+=======
 /* ---- App shell: sidebar + main (light theme) ---- */
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 .app {
   min-height: 100vh;
   display: flex;
   flex-direction: row;
   overflow-x: hidden;
+<<<<<<< HEAD
+  background: #161616;
+  --border: rgba(255, 255, 255, 0.1);
+  --text-primary: #fff;
+  --text-muted: rgba(255, 255, 255, 0.65);
+  --bg-hover: rgba(255, 255, 255, 0.06);
+  --card-bg: #272727;
+  --accent: #6366f1;
+  --accent-subtle: rgba(99, 102, 241, 0.2);
+  --input-bg: rgba(255, 255, 255, 0.08);
+=======
   --border: rgba(0, 0, 0, 0.08);
   --text-primary: #18181b;
   --text-muted: #71717a;
@@ -12,6 +27,7 @@
   --accent: #6366f1;
   --accent-subtle: rgba(99, 102, 241, 0.15);
   --input-bg: rgba(0, 0, 0, 0.04);
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 }
 
 .sidebar {
@@ -20,7 +36,11 @@
   display: flex;
   flex-direction: column;
   padding: 1.25rem;
+<<<<<<< HEAD
+  background: #141414;
+=======
   background: #f4f4f4;
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 }
 
 .logoBtn {
@@ -50,7 +70,11 @@
   display: flex;
   flex-direction: column;
   padding: 1.25rem 1rem;
+<<<<<<< HEAD
+  background: #272727;
+=======
   background: #eaeaea;
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
   border-radius: 14px;
   min-height: 0;
 }
@@ -69,8 +93,13 @@
   height: 48px;
   margin: 0 0 0.5rem;
   font-size: 1.25rem;
+<<<<<<< HEAD
+  color: #ffffff;
+  background: #7d7d7d;
+=======
   color: #fff;
   background: #18181b;
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -117,7 +146,11 @@
 }
 
 .navBtn:hover {
+<<<<<<< HEAD
+  background: rgba(255, 255, 255, 0.1);
+=======
   background: rgba(255, 255, 255, 0.5);
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
   width: 70%;
 }
 
@@ -127,9 +160,15 @@
 }
 
 .navBtnActive {
+<<<<<<< HEAD
+  background: #43474b;
+  font-weight: 600;
+  box-shadow: 0 0 10px #43474b;
+=======
   background: #ffffff;
   font-weight: 600;
   box-shadow: 0px 0px 6px rgba(223, 223, 223, 0.721);
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
   width: 70%;
 }
 
@@ -164,7 +203,11 @@
   padding: 5rem 2.5rem 2rem 2.5rem;
   overflow: auto;
   box-sizing: border-box;
+<<<<<<< HEAD
+  background: #161616;
+=======
   background: #f4f4f4;
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 }
 
 .welcomePage {
@@ -206,7 +249,11 @@
   font-size: 0.95rem;
   font-weight: 500;
   color: var(--text-primary);
+<<<<<<< HEAD
+  background: #272727;
+=======
   background: #e8e8e8;
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -214,7 +261,11 @@
 }
 
 .suggestionBtn:hover {
+<<<<<<< HEAD
+  background: rgba(255, 255, 255, 0.08);
+=======
   background: #e5e5e5;
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 }
 
 .placeholder {
@@ -228,6 +279,37 @@
   color: var(--text-muted);
 }
 
+<<<<<<< HEAD
+.resetPasswordBtn {
+  display: block;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.resetPasswordBtn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.resetPasswordBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.resetPasswordMessage {
+  margin: 0.75rem 0 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+=======
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 .logoutBtn {
   margin-top: 1rem;
   padding: 0.5rem 1rem;
@@ -241,7 +323,11 @@
 }
 
 .logoutBtn:hover {
+<<<<<<< HEAD
+  background: rgba(255, 255, 255, 0.08);
+=======
   background: rgba(0, 0, 0, 0.08);
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 }
 
 .uploadPage {
@@ -260,8 +346,13 @@
   gap: 0.5rem;
   min-height: 140px;
   padding: 1.5rem;
+<<<<<<< HEAD
+  background: var(--card-bg);
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+=======
   background: #fff;
   border: 2px dashed rgba(0, 0, 0, 0.2);
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
   border-radius: 12px;
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
@@ -281,7 +372,11 @@
   font-size: 1.75rem;
   font-weight: 300;
   color: var(--text-muted);
+<<<<<<< HEAD
+  background: rgba(255, 255, 255, 0.1);
+=======
   background: #f2f2f2;
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
   border-radius: 50%;
 }
 
@@ -318,7 +413,11 @@
 .fileListCard {
   padding: 1.25rem;
   border-radius: 12px;
+<<<<<<< HEAD
+  background: var(--card-bg);
+=======
   background: #f7f7f7;
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
   border: 1px solid var(--border);
 }
 
@@ -333,7 +432,11 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.65rem 0;
+<<<<<<< HEAD
+  border-bottom: 1px solid var(--border);
+=======
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 }
 
 .fileItem:last-child {
@@ -402,7 +505,11 @@
   text-align: center;
 }
 
+<<<<<<< HEAD
+.userCard .avatar {
+=======
 .avatar {
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
   width: 64px;
   height: 64px;
   margin: 0 auto 1rem;
@@ -411,8 +518,13 @@
   justify-content: center;
   font-size: 1.5rem;
   font-weight: 600;
+<<<<<<< HEAD
+  color: #0D1117;
+  background: #fff;
+=======
   color: #fff;
   background: var(--accent, #6366f1);
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
   border-radius: 50%;
 }
 
@@ -727,6 +839,8 @@
   }
 }
 
+<<<<<<< HEAD
+=======
 @media (prefers-color-scheme: light) {
   .app {
     --bg-app: #f4f4f6;
@@ -854,3 +968,4 @@
     color: var(--text-muted);
   }
 }
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06

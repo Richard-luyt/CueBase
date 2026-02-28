@@ -24,7 +24,21 @@ const storage : StorageEngine = multer.diskStorage({
   },
 });
 
+<<<<<<< HEAD
+const upload = multer({ 
+  storage,
+  limits : {fileSize : 15 * 1024 * 1024},
+  fileFilter: (_req, file, cb) => {
+    if (file.mimetype !== "application/pdf") {
+      cb(new Error("Only PDF files are allowed."));
+      return;
+    }
+    cb(null, true);
+  },
+});
+=======
 const upload = multer({ storage });
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 
 router.post(
   "/uploadDoc",

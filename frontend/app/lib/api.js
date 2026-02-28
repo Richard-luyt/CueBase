@@ -1,6 +1,8 @@
 import axios from "axios";
 
 const API_BASE = "http://localhost:8000/api";
+/** Backend root (auth routes like /auth/verify are not under /api) */
+const BACKEND_BASE = API_BASE.replace(/\/api\/?$/, "") || "http://localhost:8000";
 
 export const api = axios.create({
   baseURL: API_BASE,
@@ -23,6 +25,32 @@ export async function login({ email, password }) {
   return data;
 }
 
+<<<<<<< HEAD
+/** Request password reset email. Backend sends link to the given email. */
+export async function forgetPassword(email) {
+  const { data } = await api.post("/users/forgetPassword", { email });
+  return data;
+}
+
+/** Reset password with token from email link. Body: { password, passwordConfirm }. */
+export async function resetPasswordWithToken(token, { password, passwordConfirm }) {
+  const { data } = await api.patch(`/users/resetPassword/${encodeURIComponent(token)}`, {
+    password,
+    passwordConfirm,
+  });
+  return data;
+}
+
+/** Call backend GET /auth/verify?token=...&email=... (email verification link). */
+export async function verifyEmail(token, email) {
+  const url = `${BACKEND_BASE}/auth/verify?token=${encodeURIComponent(token)}&email=${encodeURIComponent(email)}`;
+  const res = await fetch(url, { credentials: "include" });
+  const data = await res.json().catch(() => ({}));
+  return { ok: res.ok, status: data.status, message: data.message };
+}
+
+=======
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 /** Store only user in localStorage; token stays in httpOnly cookie. */
 export function setAuth(user) {
   if (typeof window === "undefined") return;

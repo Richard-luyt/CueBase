@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { promisify } from "util";
 import { sendEmail } from "../middlewares/email.js";
 import crypto from "crypto";
+import verifyCode from "../models/verifyCode.js";
 
 //used for signup, login, logout, and reset password
 
@@ -31,21 +32,30 @@ export const protect = async (req, res, next) => {
     if (!freshuser) {
       return res.status(401).json({
         status: "failed",
-        error: "User is deleted",
+        message: "User is deleted",
       });
     }
     if (await freshuser.changedPassword(decoded.iat) == true) {
       return res.status(401).json({
         status: "failed",
-        error: "The user has changed the password",
+        message: "The user has changed the password",
+      });
+    }
+    if(freshuser.isVerified === false) {
+      return res.status(401).json({
+        status: "failed",
+        message: "the user didn't verify email",
       });
     }
     req.User = freshuser;
     next();
   } catch (err) {
+    if(process.env.NODE_ENV == "development") {
+      console.error("JWT verification error occured", err);
+    }
     return res.status(401).json({
       status: "failed",
-      error: err,
+      message: "Authentication failed"
     });
   }
   //check if user changed password after the token was issued
@@ -54,8 +64,8 @@ export const protect = async (req, res, next) => {
 export const restrictTo = (...roles) => {
   return async (req, res, next) => {
     const user = await User.findById(req.User._id);
-    if (!roles) {
-      next();
+    if (!roles || roles.length === 0) {
+      return next();
     }
     if (!roles.includes(user.role)) {
       return res.status(403).json({
@@ -67,6 +77,32 @@ export const restrictTo = (...roles) => {
   };
 };
 
+export const emailVerification = async (email) => {
+  const plainToken = crypto.randomBytes(32).toString('hex');
+  const tokenHash = crypto
+    .createHash('sha256')
+    .update(plainToken)
+    .digest('hex');
+  const newVerify = {
+    userEmail : email,
+    tokenHash : tokenHash,
+    expiresAt : Date.now() + 15*60*1000,
+  }
+  const resultDelete = await verifyCode.deleteMany({ userEmail: email });
+  const resultUpdate = await verifyCode.create(newVerify);
+  const link = `${process.env.MAIN_WEBSITE}/auth/verify?token=${plainToken}&email=${email}`;
+  const message = `click on the link to confirm your email ${link}`;
+  try { 
+    await sendEmail({
+      email: email,
+      subject: "Your email verification link",
+      message: message,
+    });
+  } catch (err) {
+    throw new Error(err.message);
+  }
+}
+
 export const signup = async (req, res, next) => {
   const user = {
     Username: req.body.Username,
@@ -74,35 +110,22 @@ export const signup = async (req, res, next) => {
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
     UserAPI: req.body.UserAPI,
-    passwordChangeAt: req.body.passwordChangeAt,
   };
-  const signup = await User.create(user);
-  const token = JWT.sign({ id: signup._id }, process.env.JWT_STRING, {
-    expiresIn: process.env.JWT_EXPIRES,
-  });
-
-  const cookieOptions = {
-    expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000,
-    ),
-    httpOnly: true,
-  };
-
-  if (process.env.NODE_ENV == "production") {
-    cookieOptions.secure = true;
+  const newUser = await User.create(user);
+  
+  try {
+    const result = await emailVerification(req.body.email);
+    return res.status(201).json({
+      status: "success",
+      message: "pre register success",
+    });
+  } catch (err) {
+    await User.findByIdAndDelete(newUser._id);
+    return res.status(500).json({
+      status: "failed",
+      message: err?.message ?? "Failed to send verification email",
+    });
   }
-
-  res.cookie("jwt", token, cookieOptions);
-  signup.password = undefined;
-  signup.passwordConfirm = undefined;
-  signup.passwordChangeAt = undefined;
-  return res.status(201).json({
-    status: "success",
-    token: token,
-    data: {
-      signup,
-    },
-  });
 };
 
 export const login = async (req, res, next) => {
@@ -111,7 +134,7 @@ export const login = async (req, res, next) => {
   if (!email || !password) {
     return res.status(400).json({
       status: "failed",
-      message: "Please input email of password",
+      message: "Please input email or password",
     });
   }
   const user = await User.findOne({ email: email }).select("+password");
@@ -131,7 +154,12 @@ export const login = async (req, res, next) => {
       message: "Incorrect Email or Password",
     });
   }
-  
+  if(user.isVerified == false) { 
+    return res.status(401).json({
+      status: "failed",
+      message: "Not Verified",
+    });
+  }
   const token = JWT.sign({ id: user._id }, process.env.JWT_STRING, {
     expiresIn: process.env.JWT_EXPIRES,
   });
@@ -149,6 +177,8 @@ export const login = async (req, res, next) => {
 
   res.cookie("jwt", token, cookieOptions);
   user.password = undefined;
+  user.passwordConfirm = undefined;
+  user.passwordChangeAt = undefined;
 
   return res.status(201).json({
     status: "success",
@@ -174,8 +204,8 @@ export const forgetPassword = async (req, res, next) => {
   try {
     const code = await user.createPasswordResetToken();
     await user.save({ validateBeforeSave: false });
-    const resetURL = `${req.protocol}://${req.get("host")}/api/users/resetPassword/${code}`;
-    const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to ${resetURL}`;
+    const resetURL = `${process.env.MAIN_WEBSITE}/auth/reset-password?token=${code}`;
+    const message = `Click the link below to reset your password. This link expires in 10 minutes.\n\n${resetURL}\n\nIf you didn't request this, you can ignore this email.`;
     await sendEmail({
       email: user.email,
       subject: "Your password reset token",
@@ -190,9 +220,12 @@ export const forgetPassword = async (req, res, next) => {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save({ validateBeforeSave: false });
+    if(process.env.NODE_ENV == "development") {
+      console.error(err);
+    }
     return res.status(500).json({
       status: "error",
-      message: err,
+      message: "Operation failed, please try again later."
     });
   }
 };
@@ -229,9 +262,12 @@ export const resetPassword = async (req, res, next) => {
       token: token,
     });
   } catch (err) {
+    if(process.env.NODE_ENV == "development") {
+      console.error(err);
+    }
     return res.status(400).json({
       status: "error",
-      message: err,
+      message: "Operation failed, please try again later."
     });
   }
 };
