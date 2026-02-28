@@ -21,7 +21,7 @@
   align-items: center;
   justify-content: center;
   padding: 2.5rem 2rem 2.5rem 3rem;
-  background: #000000;
+  background: #141414;
 }
 
 .card {
@@ -121,8 +121,8 @@
 }
 
 .input:focus {
-  border-color: rgba(182, 24, 95, 0.6);
-  box-shadow: 0 0 0 3px rgba(182, 24, 95, 0.2);
+  border-color: rgba(223, 223, 223, 0.548);
+  box-shadow: 0 0 0 3px rgba(241, 241, 241, 0.084);
 }
 
 .input:-webkit-autofill,
@@ -141,20 +141,25 @@
 }
 
 .submit {
-  margin-top: 0.5rem;
+  margin-top: 1.0rem;
   padding: 0.85rem 1.25rem;
   font-size: 1.05rem;
   font-weight: 600;
   color: #fff;
-  background: #656565;
-  border: none;
+  background: #3a3a3a;
+  border: 2px solid #ffa3c7;
   border-radius: 10px;
   cursor: pointer;
+  width : 100%;
+  align-self: center;
   transition: background 0.2s, opacity 0.2s;
 }
 
 .submit:hover:not(:disabled) {
-  background: #464646;
+  background: #353535;
+  border: 2px solid #bd7993;
+  border-radius: 10px;
+  transition: background 0.2s, opacity 0.2s;
 }
 
 .submit:disabled {
