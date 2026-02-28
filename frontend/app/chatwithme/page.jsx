@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getStoredUser, getMe } from "../lib/api";
 import ChatWithMeView from "../components/ChatWithMeView";
 
-export default function ChatWithMePage() {
+function ChatWithMeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [user, setUser] = useState(null);
@@ -49,5 +49,17 @@ export default function ChatWithMePage() {
       initialPrompt={initialPrompt}
       onBack={() => router.back()}
     />
+  );
+}
+
+export default function ChatWithMePage() {
+  return (
+    <Suspense
+      fallback={
+        <div style={{ padding: "2rem", textAlign: "center" }}>Loading…</div>
+      }
+    >
+      <ChatWithMeContent />
+    </Suspense>
   );
 }
