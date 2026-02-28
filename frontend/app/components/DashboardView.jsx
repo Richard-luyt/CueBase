@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+<<<<<<< HEAD
 import { clearAuth, forgetPassword } from "../lib/api";
+=======
+import { clearAuth } from "../lib/api";
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 import UserPage from "./UserPage";
 import UploadPage from "./UploadPage";
 import styles from "./DashboardView.module.css";
@@ -27,14 +31,18 @@ const NAV = [
 export default function DashboardView({ user, onLogout }) {
   const router = useRouter();
   const [view, setView] = useState(VIEW.HOME);
+<<<<<<< HEAD
   const [resetPasswordMessage, setResetPasswordMessage] = useState("");
   const [resetPasswordLoading, setResetPasswordLoading] = useState(false);
+=======
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 
   const handleLogout = () => {
     clearAuth();
     onLogout();
   };
 
+<<<<<<< HEAD
   const handleResetPassword = async () => {
     const email = user?.email;
     if (!email) {
@@ -58,6 +66,8 @@ export default function DashboardView({ user, onLogout }) {
     }
   };
 
+=======
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
   return (
     <div className={styles.app}>
       <aside className={styles.sidebar}>
@@ -67,7 +77,11 @@ export default function DashboardView({ user, onLogout }) {
           className={styles.logoBtn}
           aria-label="Home"
         >
+<<<<<<< HEAD
           <img src="/images/logo.png" alt="CueBase" className={styles.logoImg} />
+=======
+          <img src="/images/new_logo.png" alt="CueBase" className={styles.logoImg} />
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
         </button>
         <div className={styles.sidebarBox}>
           <div className={styles.userBlock}>
@@ -124,6 +138,7 @@ export default function DashboardView({ user, onLogout }) {
         {view === VIEW.SETTINGS && (
           <div className={styles.placeholder}>
             <p>Account Settings</p>
+<<<<<<< HEAD
             <button
               type="button"
               onClick={handleResetPassword}
@@ -135,6 +150,8 @@ export default function DashboardView({ user, onLogout }) {
             {resetPasswordMessage && (
               <p className={styles.resetPasswordMessage}>{resetPasswordMessage}</p>
             )}
+=======
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
             <button type="button" onClick={handleLogout} className={styles.logoutBtn}>
               Sign out
             </button>

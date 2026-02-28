@@ -21,7 +21,11 @@
   align-items: center;
   justify-content: center;
   padding: 2.5rem 2rem 2.5rem 3rem;
+<<<<<<< HEAD
   background: #000000;
+=======
+  background: #f4f4f4;
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 }
 
 .card {
@@ -29,9 +33,15 @@
   max-width: 460px;
   padding: 2.5rem;
   border-radius: 14px;
+<<<<<<< HEAD
   background: #272727;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+=======
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 }
 
 .title {
@@ -40,7 +50,11 @@
   font-weight: 600;
   text-align: center;
   letter-spacing: -0.02em;
+<<<<<<< HEAD
   color: #fff;
+=======
+  color: #18181b;
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 }
 
 .tabs {
@@ -48,7 +62,11 @@
   gap: 0.35rem;
   margin-bottom: 1.75rem;
   padding: 5px;
+<<<<<<< HEAD
   background: rgba(255, 255, 255, 0.06);
+=======
+  background: rgba(0, 0, 0, 0.06);
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
   border-radius: 10px;
 }
 
@@ -62,17 +80,30 @@
   font-weight: 500;
   cursor: pointer;
   background: transparent;
+<<<<<<< HEAD
   color: rgba(255, 255, 255, 0.65);
+=======
+  color: #71717a;
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
   transition: color 0.2s, background 0.2s;
 }
 
 .tab:hover {
+<<<<<<< HEAD
   color: #fff;
 }
 
 .tabActive {
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
+=======
+  color: #18181b;
+}
+
+.tabActive {
+  background: rgba(0, 0, 0, 0.06);
+  color: #18181b;
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 }
 
 .error {
@@ -87,7 +118,11 @@
 .success {
   margin: 0 0 1rem;
   font-size: 0.875rem;
+<<<<<<< HEAD
   color: #ffffff;
+=======
+  color: #15803d;
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 }
 
 .form {
@@ -102,26 +137,41 @@
   gap: 0.4rem;
   font-size: 0.95rem;
   font-weight: 500;
+<<<<<<< HEAD
   color: #fff;
+=======
+  color: #374151;
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 }
 
 .input {
   padding: 0.75rem 0.9rem;
   font-size: 1.05rem;
+<<<<<<< HEAD
   color: #fff;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
+=======
+  color: #18181b;
+  background: #f9fafb;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
   border-radius: 10px;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .input::placeholder {
+<<<<<<< HEAD
   color: rgba(255, 255, 255, 0.45);
+=======
+  color: #9ca3af;
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 }
 
 .input:focus {
   border-color: rgba(182, 24, 95, 0.6);
+<<<<<<< HEAD
   box-shadow: 0 0 0 3px rgba(182, 24, 95, 0.2);
 }
 
@@ -138,6 +188,9 @@
 .input:-moz-autofill {
   box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.08) inset;
   -moz-text-fill-color: #fff;
+=======
+  box-shadow: 0 0 0 3px rgba(182, 24, 95, 0.15);
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 }
 
 .submit {
@@ -146,7 +199,11 @@
   font-size: 1.05rem;
   font-weight: 600;
   color: #fff;
+<<<<<<< HEAD
   background: #656565;
+=======
+  background: #b6185f;
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -154,7 +211,11 @@
 }
 
 .submit:hover:not(:disabled) {
+<<<<<<< HEAD
   background: #464646;
+=======
+  background: #b6185f;
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 }
 
 .submit:disabled {
@@ -162,6 +223,7 @@
   cursor: not-allowed;
 }
 
+<<<<<<< HEAD
 .forgotLink,
 .forgotBack {
   display: block;
@@ -182,6 +244,8 @@
   text-decoration: underline;
 }
 
+=======
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 @media (max-width: 900px) {
   .layout {
     flex-direction: column;
@@ -196,3 +260,54 @@
   }
 }
 
+<<<<<<< HEAD
+=======
+@media (prefers-color-scheme: light) {
+  .card {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .title {
+    color: #1a1a1a;
+  }
+
+  .tab,
+  .tabActive {
+    color: #374151;
+  }
+
+  .tabActive {
+    background: rgba(0, 0, 0, 0.06);
+    color: #111;
+  }
+
+  .tab:hover {
+    color: #111;
+  }
+
+  .label {
+    color: #374151;
+  }
+
+  .input {
+    color: #111;
+    background: #fff;
+    border-color: rgba(0, 0, 0, 0.15);
+  }
+
+  .input::placeholder {
+    color: #9ca3af;
+  }
+
+  .input:focus {
+    border-color: #b5006d;
+    box-shadow: 0 0 0 3px rgba(100, 108, 255, 0.2);
+  }
+
+  .error {
+    color: #b91c1c;
+    background: rgba(248, 113, 113, 0.2);
+  }
+}
+>>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
