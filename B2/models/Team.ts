@@ -8,6 +8,7 @@ const teamSchema = new Schema({
     },
     teamMembers : {
         type : [Schema.Types.ObjectId],
+        index: true,
     },
     memberNumbers : {
         type : Number,

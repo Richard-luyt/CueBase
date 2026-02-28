@@ -5,6 +5,7 @@ import { uploadDocument, getDocuments, deleteDocument } from "../lib/api";
 import styles from "./DashboardView.module.css";
 
 const ACCEPT_PDF = ".pdf,application/pdf";
+const MAX_FILE_SIZE_BYTES = 15 * 1024 * 1024; // 15MB, same as backend
 
 function formatDate(date) {
   if (!date) return "";
@@ -53,6 +54,14 @@ export default function UploadPage() {
       setUploadFile(null);
       return;
     }
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      setMessage({
+        text: `File too large. Maximum size is ${MAX_FILE_SIZE_BYTES / 1024 / 1024}MB.`,
+        isError: true,
+      });
+      setUploadFile(null);
+      return;
+    }
     setUploadFile(file);
   };
 
@@ -85,12 +94,20 @@ export default function UploadPage() {
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer?.files?.[0];
-    if (file && file.type === "application/pdf") {
-      setUploadFile(file);
-      setMessage({ text: "", isError: false });
-    } else if (file) {
+    if (!file) return;
+    if (file.type !== "application/pdf") {
       setMessage({ text: "Please use a PDF file.", isError: true });
+      return;
     }
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      setMessage({
+        text: `File too large. Maximum size is ${MAX_FILE_SIZE_BYTES / 1024 / 1024}MB.`,
+        isError: true,
+      });
+      return;
+    }
+    setUploadFile(file);
+    setMessage({ text: "", isError: false });
   };
 
   const handleDragOver = (e) => {

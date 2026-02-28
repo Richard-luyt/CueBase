@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { register, login, setAuth } from "../lib/api";
+import { register, login, setAuth, forgetPassword } from "../lib/api";
 import styles from "./AuthView.module.css";
 
 export default function AuthView({ onAuth }) {
@@ -15,6 +15,7 @@ export default function AuthView({ onAuth }) {
     password: "",
     passwordConfirm: "",
   });
+  const [forgotEmail, setForgotEmail] = useState("");
 
   const handleSignInChange = (e) => {
     setSignInForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -24,6 +25,32 @@ export default function AuthView({ onAuth }) {
   const handleSignUpChange = (e) => {
     setSignUpForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     setMessage({ text: "", isError: false });
+  };
+
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    if (!forgotEmail.trim()) {
+      setMessage({ text: "Enter your email address", isError: true });
+      return;
+    }
+    setMessage({ text: "", isError: false });
+    setLoading(true);
+    try {
+      const data = await forgetPassword(forgotEmail.trim());
+      if (data.status === "success") {
+        setMessage({
+          text: "Check your email for a link to reset your password.",
+          isError: false,
+        });
+      } else {
+        setMessage({ text: data.message || "Something went wrong", isError: true });
+      }
+    } catch (err) {
+      const msg = err.response?.data?.message ?? err.response?.data?.error ?? err.message ?? "Request failed.";
+      setMessage({ text: msg, isError: true });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSignIn = async (e) => {
@@ -63,9 +90,11 @@ export default function AuthView({ onAuth }) {
         passwordConfirm: signUpForm.passwordConfirm,
       });
       if (data.status === "success") {
-        const user = data.data?.signup ?? { Username: signUpForm.Username, email: signUpForm.email };
-        setAuth(user);
-        onAuth(user);
+        setMessage({
+          text: data.message || "Check your email to verify your account, then sign in.",
+          isError: false,
+        });
+        setMode("signin");
       } else {
         setMessage({ text: data.message || "Sign up failed", isError: true });
       }
@@ -106,6 +135,35 @@ export default function AuthView({ onAuth }) {
           {message.text && (
             <p className={message.isError ? styles.error : styles.success}>{message.text}</p>
           )}
+          {mode === "forgot" && (
+            <form onSubmit={handleForgotPassword} className={styles.form}>
+              <label className={styles.label}>
+                Email
+                <input
+                  type="email"
+                  value={forgotEmail}
+                  onChange={(e) => {
+                    setForgotEmail(e.target.value);
+                    setMessage({ text: "", isError: false });
+                  }}
+                  required
+                  autoComplete="email"
+                  className={styles.input}
+                  placeholder="Enter the email for your account"
+                />
+              </label>
+              <button type="submit" disabled={loading} className={styles.submit}>
+                {loading ? "Sending…" : "Send reset link"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setMode("signin")}
+                className={styles.forgotBack}
+              >
+                Back to sign in
+              </button>
+            </form>
+          )}
           {mode === "signin" && (
             <form onSubmit={handleSignIn} className={styles.form}>
               <label className={styles.label}>
@@ -134,6 +192,13 @@ export default function AuthView({ onAuth }) {
               </label>
               <button type="submit" disabled={loading} className={styles.submit}>
                 {loading ? "Signing in…" : "Sign in"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setMode("forgot")}
+                className={styles.forgotLink}
+              >
+                Forgot password?
               </button>
             </form>
           )}

@@ -1,4 +1,4 @@
-/* Chat with me page: full-page chat, back, conversation, input bar */
+/* Chat with me page: full-page chat, back, conversation, input bar (dark #0D1117) */
 
 .page {
   height: 100vh;
@@ -6,31 +6,33 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: #fff;
-  --text: #18181b;
-  --muted: #71717a;
+  background: #222222;
+  --text: #fff;
+  --muted: rgba(255, 255, 255, 0.65);
   --accent: #6366f1;
   --model-avatar: #6366f1;
-  --user-avatar-bg: #18181b;
-  --user-avatar-text: #fff;
-  --bubble-model-bg: rgba(0, 0, 0, 0.04);
-  --bubble-user-bg: rgba(99, 102, 241, 0.1);
-  --input-border: rgba(0, 0, 0, 0.12);
+  --user-avatar-bg: #fff;
+  --user-avatar-text: #0D1117;
+  --bubble-model-bg: #222222;
+  --bubble-user-bg: rgba(255, 255, 255, 0.12);
+  --input-border: rgba(255, 255, 255, 0.2);
   --input-focus: var(--accent);
 }
 
 .page[data-mode="strict"] {
   --model-avatar: #db2b8a;
+  --input-bar-ring: #db2b8a;
 }
 
 .page[data-mode="search"] {
-  --model-avatar: #2563eb;
+  --model-avatar: #3877ff;
+  --input-bar-ring: #3877ff;
 }
 
 .header {
   flex-shrink: 0;
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .backBtn {
@@ -88,7 +90,7 @@
 .bubbleModel {
   padding: 0.75rem 1rem;
   border-radius: 12px;
-  background: #fff;
+  background: var(--bubble-model-bg);
   font-size: 0.95rem;
   line-height: 1.5;
   color: var(--text);
@@ -135,7 +137,7 @@
   left: 0;
   right: 0;
   height: 80px;
-  background: linear-gradient(to top, #fff, transparent);
+  background: linear-gradient(to top, #222222, transparent);
   pointer-events: none;
 }
 
@@ -163,8 +165,8 @@
   max-width: 720px;
   width: 100%;
   border-radius: 20px;
-  border: 3px solid rgba(0, 0, 0, 0.25);
-  background: #f3f4f6;
+  border: 2px solid var(--input-bar-ring);
+  background: #272727;
   align-self: center;
 }
 
@@ -210,7 +212,7 @@
 }
 
 .modeBtn[aria-pressed="false"] {
-  background: #2563eb;
+  background: #3877ff;
 }
 
 .modeBtn:hover {

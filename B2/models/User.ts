@@ -65,9 +65,13 @@ const UserSchema = new Schema({
     default: true,
     select: false,
   },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  }
 });
 
-export type IUser = InferSchemaType<typeof UserSchema>;
+export type IUser = InferSchemaType<typeof UserSchema> & {_id : mongoose.Types.ObjectId};
 
 UserSchema.pre("save", async function (this: HydratedDocument<IUser>) {
   if (!this.isModified("password")) return;

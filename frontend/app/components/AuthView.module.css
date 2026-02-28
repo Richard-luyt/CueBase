@@ -21,7 +21,7 @@
   align-items: center;
   justify-content: center;
   padding: 2.5rem 2rem 2.5rem 3rem;
-  background: #f4f4f4;
+  background: #000000;
 }
 
 .card {
@@ -29,9 +29,9 @@
   max-width: 460px;
   padding: 2.5rem;
   border-radius: 14px;
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  background: #272727;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
 }
 
 .title {
@@ -40,7 +40,7 @@
   font-weight: 600;
   text-align: center;
   letter-spacing: -0.02em;
-  color: #18181b;
+  color: #fff;
 }
 
 .tabs {
@@ -48,7 +48,7 @@
   gap: 0.35rem;
   margin-bottom: 1.75rem;
   padding: 5px;
-  background: rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.06);
   border-radius: 10px;
 }
 
@@ -62,17 +62,17 @@
   font-weight: 500;
   cursor: pointer;
   background: transparent;
-  color: #71717a;
+  color: rgba(255, 255, 255, 0.65);
   transition: color 0.2s, background 0.2s;
 }
 
 .tab:hover {
-  color: #18181b;
+  color: #fff;
 }
 
 .tabActive {
-  background: rgba(0, 0, 0, 0.06);
-  color: #18181b;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
 }
 
 .error {
@@ -87,7 +87,7 @@
 .success {
   margin: 0 0 1rem;
   font-size: 0.875rem;
-  color: #15803d;
+  color: #ffffff;
 }
 
 .form {
@@ -102,27 +102,42 @@
   gap: 0.4rem;
   font-size: 0.95rem;
   font-weight: 500;
-  color: #374151;
+  color: #fff;
 }
 
 .input {
   padding: 0.75rem 0.9rem;
   font-size: 1.05rem;
-  color: #18181b;
-  background: #f9fafb;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 10px;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .input::placeholder {
-  color: #9ca3af;
+  color: rgba(255, 255, 255, 0.45);
 }
 
 .input:focus {
   border-color: rgba(182, 24, 95, 0.6);
-  box-shadow: 0 0 0 3px rgba(182, 24, 95, 0.15);
+  box-shadow: 0 0 0 3px rgba(182, 24, 95, 0.2);
+}
+
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #fff;
+  caret-color: #fff;
+
+  -webkit-box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.08) inset;
+  box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.08) inset;
+}
+
+.input:-moz-autofill {
+  box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.08) inset;
+  -moz-text-fill-color: #fff;
 }
 
 .submit {
@@ -131,7 +146,7 @@
   font-size: 1.05rem;
   font-weight: 600;
   color: #fff;
-  background: #b6185f;
+  background: #656565;
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -139,12 +154,32 @@
 }
 
 .submit:hover:not(:disabled) {
-  background: #b6185f;
+  background: #464646;
 }
 
 .submit:disabled {
   opacity: 0.7;
   cursor: not-allowed;
+}
+
+.forgotLink,
+.forgotBack {
+  display: block;
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0;
+  font-size: 0.95rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  text-align: center;
+  font-weight: 500;
+}
+
+.forgotLink:hover,
+.forgotBack:hover {
+  text-decoration: underline;
 }
 
 @media (max-width: 900px) {
@@ -161,51 +196,3 @@
   }
 }
 
-@media (prefers-color-scheme: light) {
-  .card {
-    background: rgba(255, 255, 255, 0.9);
-    border-color: rgba(0, 0, 0, 0.08);
-  }
-
-  .title {
-    color: #1a1a1a;
-  }
-
-  .tab,
-  .tabActive {
-    color: #374151;
-  }
-
-  .tabActive {
-    background: rgba(0, 0, 0, 0.06);
-    color: #111;
-  }
-
-  .tab:hover {
-    color: #111;
-  }
-
-  .label {
-    color: #374151;
-  }
-
-  .input {
-    color: #111;
-    background: #fff;
-    border-color: rgba(0, 0, 0, 0.15);
-  }
-
-  .input::placeholder {
-    color: #9ca3af;
-  }
-
-  .input:focus {
-    border-color: #b5006d;
-    box-shadow: 0 0 0 3px rgba(100, 108, 255, 0.2);
-  }
-
-  .error {
-    color: #b91c1c;
-    background: rgba(248, 113, 113, 0.2);
-  }
-}

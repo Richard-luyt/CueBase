@@ -1,17 +1,18 @@
-/* ---- App shell: sidebar + main (light theme) ---- */
+/* ---- App shell: sidebar + main (dark theme #0D1117) ---- */
 .app {
   min-height: 100vh;
   display: flex;
   flex-direction: row;
   overflow-x: hidden;
-  --border: rgba(0, 0, 0, 0.08);
-  --text-primary: #18181b;
-  --text-muted: #71717a;
-  --bg-hover: rgba(0, 0, 0, 0.04);
-  --card-bg: #fff;
+  background: #161616;
+  --border: rgba(255, 255, 255, 0.1);
+  --text-primary: #fff;
+  --text-muted: rgba(255, 255, 255, 0.65);
+  --bg-hover: rgba(255, 255, 255, 0.06);
+  --card-bg: #272727;
   --accent: #6366f1;
-  --accent-subtle: rgba(99, 102, 241, 0.15);
-  --input-bg: rgba(0, 0, 0, 0.04);
+  --accent-subtle: rgba(99, 102, 241, 0.2);
+  --input-bg: rgba(255, 255, 255, 0.08);
 }
 
 .sidebar {
@@ -20,7 +21,7 @@
   display: flex;
   flex-direction: column;
   padding: 1.25rem;
-  background: #f4f4f4;
+  background: #141414;
 }
 
 .logoBtn {
@@ -50,7 +51,7 @@
   display: flex;
   flex-direction: column;
   padding: 1.25rem 1rem;
-  background: #eaeaea;
+  background: #272727;
   border-radius: 14px;
   min-height: 0;
 }
@@ -69,8 +70,8 @@
   height: 48px;
   margin: 0 0 0.5rem;
   font-size: 1.25rem;
-  color: #fff;
-  background: #18181b;
+  color: #ffffff;
+  background: #7d7d7d;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -117,7 +118,7 @@
 }
 
 .navBtn:hover {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.1);
   width: 70%;
 }
 
@@ -127,9 +128,9 @@
 }
 
 .navBtnActive {
-  background: #ffffff;
+  background: #43474b;
   font-weight: 600;
-  box-shadow: 0px 0px 6px rgba(223, 223, 223, 0.721);
+  box-shadow: 0 0 10px #43474b;
   width: 70%;
 }
 
@@ -164,7 +165,7 @@
   padding: 5rem 2.5rem 2rem 2.5rem;
   overflow: auto;
   box-sizing: border-box;
-  background: #f4f4f4;
+  background: #161616;
 }
 
 .welcomePage {
@@ -206,7 +207,7 @@
   font-size: 0.95rem;
   font-weight: 500;
   color: var(--text-primary);
-  background: #e8e8e8;
+  background: #272727;
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -214,7 +215,7 @@
 }
 
 .suggestionBtn:hover {
-  background: #e5e5e5;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .placeholder {
@@ -225,6 +226,34 @@
 .placeholderSub {
   margin: 0.5rem 0 0;
   font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.resetPasswordBtn {
+  display: block;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.resetPasswordBtn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.resetPasswordBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.resetPasswordMessage {
+  margin: 0.75rem 0 0;
+  font-size: 0.9rem;
   color: var(--text-muted);
 }
 
@@ -241,7 +270,7 @@
 }
 
 .logoutBtn:hover {
-  background: rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .uploadPage {
@@ -260,8 +289,8 @@
   gap: 0.5rem;
   min-height: 140px;
   padding: 1.5rem;
-  background: #fff;
-  border: 2px dashed rgba(0, 0, 0, 0.2);
+  background: var(--card-bg);
+  border: 2px dashed rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
@@ -281,7 +310,7 @@
   font-size: 1.75rem;
   font-weight: 300;
   color: var(--text-muted);
-  background: #f2f2f2;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 50%;
 }
 
@@ -318,7 +347,7 @@
 .fileListCard {
   padding: 1.25rem;
   border-radius: 12px;
-  background: #f7f7f7;
+  background: var(--card-bg);
   border: 1px solid var(--border);
 }
 
@@ -333,7 +362,7 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.65rem 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid var(--border);
 }
 
 .fileItem:last-child {
@@ -402,7 +431,7 @@
   text-align: center;
 }
 
-.avatar {
+.userCard .avatar {
   width: 64px;
   height: 64px;
   margin: 0 auto 1rem;
@@ -411,8 +440,8 @@
   justify-content: center;
   font-size: 1.5rem;
   font-weight: 600;
-  color: #fff;
-  background: var(--accent, #6366f1);
+  color: #0D1117;
+  background: #fff;
   border-radius: 50%;
 }
 
@@ -727,130 +756,3 @@
   }
 }
 
-@media (prefers-color-scheme: light) {
-  .app {
-    --bg-app: #f4f4f6;
-    --border: rgba(0, 0, 0, 0.08);
-    --text-primary: #18181b;
-    --text-muted: #71717a;
-    --bg-hover: rgba(0, 0, 0, 0.04);
-    --card-bg: #fff;
-    --accent: #6366f1;
-    --accent-subtle: rgba(99, 102, 241, 0.15);
-    --input-bg: rgba(0, 0, 0, 0.04);
-  }
-
-  .logoBtn {
-    color: var(--text-primary);
-  }
-
-  .navBtn {
-    color: var(--text-muted);
-  }
-
-  .navBtn:hover {
-    color: var(--text-primary);
-  }
-
-  .navBtnActive {
-    color: var(--text-primary);
-  }
-
-  .avatar {
-    color: #fff;
-  }
-
-  .userName {
-    color: var(--text-primary);
-  }
-
-  .userEmail,
-  .userRole {
-    color: var(--text-muted);
-  }
-
-  .userRole {
-    background: var(--bg-hover);
-  }
-
-  .actionCard:hover {
-    border-color: var(--accent-subtle);
-  }
-
-  .actionTitle {
-    color: var(--text-primary);
-  }
-
-  .actionDesc {
-    color: var(--text-muted);
-  }
-
-  .backBtn {
-    color: var(--text-muted);
-  }
-
-  .backBtn:hover {
-    color: var(--text-primary);
-  }
-
-  .cardTitle {
-    color: var(--text-primary);
-  }
-
-  .cardSub {
-    color: var(--text-muted);
-  }
-
-  .fileInput {
-    color: var(--text-primary);
-    background: var(--input-bg);
-    border-color: var(--border);
-  }
-
-  .fileInput::file-selector-button {
-    color: var(--text-primary);
-    background: var(--bg-hover);
-  }
-
-  .queryInput {
-    color: var(--text-primary);
-    background: var(--input-bg);
-    border-color: var(--border);
-  }
-
-  .queryInput::placeholder {
-    color: var(--text-muted);
-  }
-
-  .fileName {
-    color: var(--text-muted);
-  }
-
-  .msgError {
-    color: #b91c1c;
-  }
-
-  .msgSuccess {
-    color: #15803d;
-  }
-
-  .resultsTitle {
-    color: var(--text-primary);
-  }
-
-  .resultItem {
-    color: var(--text-muted);
-  }
-
-  .queryModeLabel {
-    color: var(--text-muted);
-  }
-
-  .answerBlock {
-    color: var(--text-primary);
-  }
-
-  .answerEmpty {
-    color: var(--text-muted);
-  }
-}

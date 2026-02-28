@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { clearAuth } from "../lib/api";
+import { clearAuth, forgetPassword } from "../lib/api";
 import UserPage from "./UserPage";
 import UploadPage from "./UploadPage";
 import styles from "./DashboardView.module.css";
@@ -27,10 +27,35 @@ const NAV = [
 export default function DashboardView({ user, onLogout }) {
   const router = useRouter();
   const [view, setView] = useState(VIEW.HOME);
+  const [resetPasswordMessage, setResetPasswordMessage] = useState("");
+  const [resetPasswordLoading, setResetPasswordLoading] = useState(false);
 
   const handleLogout = () => {
     clearAuth();
     onLogout();
+  };
+
+  const handleResetPassword = async () => {
+    const email = user?.email;
+    if (!email) {
+      setResetPasswordMessage("No email on file.");
+      return;
+    }
+    setResetPasswordMessage("");
+    setResetPasswordLoading(true);
+    try {
+      const data = await forgetPassword(email);
+      if (data.status === "success") {
+        setResetPasswordMessage("Check your email for a link to reset your password.");
+      } else {
+        setResetPasswordMessage(data.message || "Request failed.");
+      }
+    } catch (err) {
+      const msg = err.response?.data?.message ?? err.response?.data?.error ?? err.message ?? "Request failed.";
+      setResetPasswordMessage(msg);
+    } finally {
+      setResetPasswordLoading(false);
+    }
   };
 
   return (
@@ -42,7 +67,7 @@ export default function DashboardView({ user, onLogout }) {
           className={styles.logoBtn}
           aria-label="Home"
         >
-          <img src="/images/new_logo.png" alt="CueBase" className={styles.logoImg} />
+          <img src="/images/logo.png" alt="CueBase" className={styles.logoImg} />
         </button>
         <div className={styles.sidebarBox}>
           <div className={styles.userBlock}>
@@ -99,6 +124,17 @@ export default function DashboardView({ user, onLogout }) {
         {view === VIEW.SETTINGS && (
           <div className={styles.placeholder}>
             <p>Account Settings</p>
+            <button
+              type="button"
+              onClick={handleResetPassword}
+              disabled={resetPasswordLoading}
+              className={styles.resetPasswordBtn}
+            >
+              {resetPasswordLoading ? "Sending…" : "Reset password"}
+            </button>
+            {resetPasswordMessage && (
+              <p className={styles.resetPasswordMessage}>{resetPasswordMessage}</p>
+            )}
             <button type="button" onClick={handleLogout} className={styles.logoutBtn}>
               Sign out
             </button>
