@@ -3,7 +3,7 @@
   "compilerOptions": {
     // File Layout
     "rootDir": "./B2",
-    "outDir": "./dist",
+    "outDir": "./B2/dist",
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module

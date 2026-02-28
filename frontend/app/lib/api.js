@@ -25,7 +25,6 @@ export async function login({ email, password }) {
   return data;
 }
 
-<<<<<<< HEAD
 /** Request password reset email. Backend sends link to the given email. */
 export async function forgetPassword(email) {
   const { data } = await api.post("/users/forgetPassword", { email });
@@ -49,8 +48,6 @@ export async function verifyEmail(token, email) {
   return { ok: res.ok, status: data.status, message: data.message };
 }
 
-=======
->>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
 /** Store only user in localStorage; token stays in httpOnly cookie. */
 export function setAuth(user) {
   if (typeof window === "undefined") return;
