@@ -13,11 +13,12 @@ import multer, { type StorageEngine } from "multer";
 
 const router : Router = Router();
 
+
 const storage : StorageEngine = multer.diskStorage({
-  destination: (req : Request, file: Express.Multer.File, cb) => {
+  destination: (req : Request, file, cb) => {
     cb(null, "uploads/");
   },
-  filename: (req : Request, file: Express.Multer.File, cb) => {
+  filename: (req : Request, file, cb) => {
     const ext : string = path.extname(file.originalname);
     const uniqueName : string =  `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
     cb(null, uniqueName);
