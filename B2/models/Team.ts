@@ -8,10 +8,7 @@ const teamSchema = new Schema({
     },
     teamMembers : {
         type : [Schema.Types.ObjectId],
-<<<<<<< HEAD
         index: true,
-=======
->>>>>>> dd8f5a074a896056978a0336688c6eb3089cfe06
     },
     memberNumbers : {
         type : Number,
