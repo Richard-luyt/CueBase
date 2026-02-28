@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const API_BASE = "http://localhost:8000/api";
-/** Backend root (auth routes like /auth/verify are not under /api) */
+const API_BASE =
+  (typeof process !== "undefined" && process.env.NEXT_PUBLIC_API_BASE) ||
+  "http://localhost:8000/api";
 const BACKEND_BASE = API_BASE.replace(/\/api\/?$/, "") || "http://localhost:8000";
 
 export const api = axios.create({
