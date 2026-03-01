@@ -6,6 +6,7 @@ import { GoogleGenAI, type EmbedContentConfig, type EmbedContentResponse } from 
 import PDFParser from "pdf2json";
 import Chunk from "../models/Chunk.js";
 import Document from "../models/Document.js";
+import { encryptContent, decryptContent } from "./cryptoContent.js";
 import mongoose from "mongoose";
 
 export const Embedding = async (textFile) => {
@@ -69,13 +70,17 @@ const Divide = async (TextFile, ID, userID) => {
 
     try {
       const embeddingResult = await Embedding(testString[myChunkIndex]);
+      console.log("Embedding完成");
+      const encryptedContent = await encryptContent(testString[myChunkIndex]!);
+      console.log("加密完成");
       const newChunk = {
         BelongDocument: ID,
         User: userID,
         ChunkIndex: myChunkIndex,
-        Content: testString[myChunkIndex]!,
+        Content: encryptedContent!,
         Embedding: embeddingResult,
       };
+      console.log("当前数据库连接状态:", mongoose.connection.readyState);
       const createChunk = await Chunk.create(newChunk);
       return requestSending();
     } catch (err) {
@@ -195,7 +200,8 @@ export const queryDocument = async (req: Request, res: Response) => {
     for (const text of results) {
       if (text.score >= 0.65) {
         count ++;
-        TextString = TextString + `[Context ${count}]: ${text.Content}\n\n`; 
+        const plainContent = decryptContent(text.Content);
+        TextString = TextString + `[Context ${count}]: ${plainContent}\n\n`; 
       }
     }
     if (req.body.mode === "strict") {

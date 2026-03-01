@@ -17,7 +17,6 @@ const fileChunk = new mongoose.Schema({
   },
   Content: {
     type: String,
-    maxlength: 1500,
   },
   Embedding: {
     type: [Number],
