@@ -49,7 +49,7 @@ function VerifyContent() {
   const titleStyle = { color: "#fff", marginBottom: "1rem", fontSize: "1.5rem" };
   const textStyle = { color: "rgba(255,255,255,0.85)", marginBottom: "1.5rem", lineHeight: 1.5 };
   const linkStyle = {
-    color: "#b6185f",
+    color: "#ffa3c7",
     textDecoration: "none",
     fontWeight: 600,
   };

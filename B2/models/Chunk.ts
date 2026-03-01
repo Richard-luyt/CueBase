@@ -21,6 +21,10 @@ const fileChunk = new mongoose.Schema({
   Embedding: {
     type: [Number],
   },
+  Private: {
+    type: Boolean,
+    default: true,
+  }
 });
 
 export type IFileChunk = InferSchemaType<typeof fileChunk>;

@@ -1,11 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { register, login, setAuth, forgetPassword } from "../lib/api";
 import styles from "./AuthView.module.css";
 
+const TYPING_INTERVAL_MS = 150;
+const CURSOR_ALONE_MS = 900;
+const PAUSE_AFTER_TYPING_MS = 3800;
+const DELETING_INTERVAL_MS = 120;
+
 export default function AuthView({ onAuth }) {
   const [mode, setMode] = useState("signin");
+  const [logoPhase, setLogoPhase] = useState("typing"); // "typing" | "display" | "deleting"
+  const [logoTypedLength, setLogoTypedLength] = useState(0);
   const [message, setMessage] = useState({ text: "", isError: false });
   const [loading, setLoading] = useState(false);
   const [signInForm, setSignInForm] = useState({ email: "", password: "" });
@@ -15,7 +22,32 @@ export default function AuthView({ onAuth }) {
     password: "",
     passwordConfirm: "",
   });
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [forgotEmail, setForgotEmail] = useState("");
+
+  useEffect(() => {
+    if (logoPhase === "typing") {
+      if (logoTypedLength < 8) {
+        const delay = logoTypedLength === 0 ? CURSOR_ALONE_MS : TYPING_INTERVAL_MS;
+        const t = setTimeout(() => setLogoTypedLength((n) => n + 1), delay);
+        return () => clearTimeout(t);
+      }
+      setLogoPhase("display");
+      return;
+    }
+    if (logoPhase === "display") {
+      const t = setTimeout(() => setLogoPhase("deleting"), PAUSE_AFTER_TYPING_MS);
+      return () => clearTimeout(t);
+    }
+    if (logoPhase === "deleting") {
+      if (logoTypedLength > 0) {
+        const t = setTimeout(() => setLogoTypedLength((n) => n - 1), DELETING_INTERVAL_MS);
+        return () => clearTimeout(t);
+      }
+      setLogoPhase("typing");
+      return;
+    }
+  }, [logoPhase, logoTypedLength]);
 
   const handleSignInChange = (e) => {
     setSignInForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -76,6 +108,10 @@ export default function AuthView({ onAuth }) {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    if (!agreedToTerms) {
+      setMessage({ text: "You must agree to the Terms, Disclaimer and Privacy Policy to register.", isError: true });
+      return;
+    }
     if (signUpForm.password !== signUpForm.passwordConfirm) {
       setMessage({ text: "Passwords do not match", isError: true });
       return;
@@ -108,11 +144,29 @@ export default function AuthView({ onAuth }) {
 
   return (
     <div className={styles.layout}>
-      <div
-        className={styles.leftPanel}
-        style={{ backgroundImage: "url('/images/SigninPage.svg')" }}
-        aria-hidden="true"
-      />
+      <div className={styles.leftPanel} aria-hidden="true">
+        <div className={styles.leftPanelContent}>
+          <div className={styles.logo}>
+            {logoTypedLength >= 1 && <span className={styles.logoCue}>C</span>}
+            {logoTypedLength >= 2 && <span className={styles.logoCue}>u</span>}
+            {logoTypedLength >= 3 && <span className={styles.logoCue}>e</span>}
+            {logoTypedLength >= 4 && (
+              <span className={styles.logoB}>
+                <span className={styles.logoArrow} aria-hidden="true">→</span>
+                B
+              </span>
+            )}
+            {logoTypedLength >= 5 && <span className={styles.logoAse}>a</span>}
+            {logoTypedLength >= 6 && <span className={styles.logoAse}>s</span>}
+            {logoTypedLength >= 7 && <span className={styles.logoAse}>e</span>}
+            <span className={styles.logoCursor}>_</span>
+          </div>
+          <p className={styles.tagline1}>Your Knowledge</p>
+          <p className={styles.tagline2}>
+            Right on <span className={styles.cueHighlight}>Cue</span>
+          </p>
+        </div>
+      </div>
       <div className={styles.rightPanel}>
         <div className={styles.card}>
           <h1 className={styles.title}>Welcome!</h1>
@@ -253,6 +307,25 @@ export default function AuthView({ onAuth }) {
                   autoComplete="new-password"
                   className={styles.input}
                 />
+              </label>
+              <label className={styles.agreeRow}>
+                <input
+                  type="checkbox"
+                  checked={agreedToTerms}
+                  onChange={(e) => {
+                    setAgreedToTerms(e.target.checked);
+                    setMessage({ text: "", isError: false });
+                  }}
+                  className={styles.checkbox}
+                  aria-describedby="agree-desc"
+                />
+                <span id="agree-desc" className={styles.agreeText}>
+                  I agree to the{" "}
+                  <a href="/terms-and-policies" target="_blank" rel="noopener noreferrer" className={styles.agreeLink}>
+                    Terms, Disclaimer and Privacy Policy
+                  </a>
+                  .
+                </span>
               </label>
               <button type="submit" disabled={loading} className={styles.submit}>
                 {loading ? "Creating account…" : "Sign up"}

@@ -23,7 +23,7 @@ const cardStyle = {
 };
 const titleStyle = { color: "#fff", marginBottom: "1rem", fontSize: "1.5rem" };
 const textStyle = { color: "rgba(255,255,255,0.85)", marginBottom: "1.5rem", lineHeight: 1.5 };
-const linkStyle = { color: "#b6185f", textDecoration: "none", fontWeight: 600 };
+const linkStyle = { color: "#ffa3c7", textDecoration: "none", fontWeight: 600 };
 const inputStyle = {
   width: "100%",
   padding: "0.75rem 0.9rem",
@@ -43,7 +43,7 @@ const submitStyle = {
   fontSize: "1.05rem",
   fontWeight: 600,
   color: "#fff",
-  background: "#b6185f",
+  background: "#ffa3c7",
   border: "none",
   borderRadius: "10px",
   cursor: "pointer",
