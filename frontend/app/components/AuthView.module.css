@@ -1,7 +1,57 @@
+.authWrapper {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+}
+
 .layout {
   display: flex;
   min-height: 100vh;
   width: 100%;
+}
+
+.scrollHint {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  color: rgba(255, 255, 255, 0.905);
+  font-size: 0.75rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.scrollHint:hover {
+  color: rgba(255, 255, 255, 0.905);
+}
+
+.chevron {
+  display: block;
+  line-height: 0;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.chevron svg {
+  display: block;
+}
+
+.scrollHintText {
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+  opacity: 0.85;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
 }
 
 .leftPanel {

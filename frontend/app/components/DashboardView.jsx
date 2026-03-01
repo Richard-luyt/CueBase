@@ -12,7 +12,6 @@ const VIEW = {
   FILES: "files",
   CHAT: "chat",
   TEAMS: "teams",
-  PURCHASES: "purchases",
   SETTINGS: "settings",
 };
 
@@ -21,7 +20,6 @@ const NAV = [
   { id: VIEW.FILES, label: "Files" },
   { id: VIEW.CHAT, label: "Start Chat" },
   { id: VIEW.TEAMS, label: "My Teams" },
-  { id: VIEW.PURCHASES, label: "My purchases" },
 ];
 
 export default function DashboardView({ user, onLogout }) {
@@ -115,7 +113,7 @@ export default function DashboardView({ user, onLogout }) {
           />
         )}
         {view === VIEW.FILES && <UploadPage />}
-        {(view === VIEW.TEAMS || view === VIEW.PURCHASES) && (
+        {(view === VIEW.TEAMS ) && (
           <div className={styles.placeholder}>
             <p>{view === VIEW.TEAMS ? "My Teams" : "My purchases"}</p>
             <p className={styles.placeholderSub}>Coming soon.</p>

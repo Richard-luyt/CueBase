@@ -143,7 +143,8 @@ export default function AuthView({ onAuth }) {
   };
 
   return (
-    <div className={styles.layout}>
+    <div id="auth" className={styles.authWrapper}>
+      <div className={styles.layout}>
       <div className={styles.leftPanel} aria-hidden="true">
         <div className={styles.leftPanelContent}>
           <div className={styles.logo}>
@@ -334,6 +335,16 @@ export default function AuthView({ onAuth }) {
           )}
         </div>
       </div>
+      </div>
+      <a href="#features" className={styles.scrollHint} aria-label="Scroll to learn more about CueBase">
+        <span className={styles.chevron} aria-hidden="true">
+          <svg width="28" height="20" viewBox="0 0 28 20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M4 4 L14 12 L24 4" />
+            <path d="M4 12 L14 20 L24 12" />
+          </svg>
+        </span>
+        <span className={styles.scrollHintText}>Scroll to learn more about CueBase</span>
+      </a>
     </div>
   );
 }

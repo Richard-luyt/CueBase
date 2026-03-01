@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { getStoredUser, getMe, clearAuth } from "./lib/api";
 import AuthView from "./components/AuthView";
 import DashboardView from "./components/DashboardView";
+import FeaturesContent from "./components/FeaturesContent";
 
 export default function Home() {
   const [user, setUser] = useState(null);
@@ -54,5 +55,10 @@ export default function Home() {
       />
     );
   }
-  return <AuthView onAuth={(u) => setUser(u)} />;
+  return (
+    <>
+      <AuthView onAuth={(u) => setUser(u)} />
+      <FeaturesContent />
+    </>
+  );
 }

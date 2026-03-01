@@ -9,15 +9,16 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
 a {
   font-weight: 500;
-  color: #d0166a;
+  color: #000000;
   text-decoration: inherit;
 }
 a:hover {
-  color: #a10038;
+  color: #000000;
 }
 
 body {

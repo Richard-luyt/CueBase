@@ -117,7 +117,7 @@ export const signup = async (req, res, next) => {
     const result = await emailVerification(req.body.email);
     return res.status(201).json({
       status: "success",
-      message: "pre register success",
+      message: "Please check your mail box and verify your email address",
     });
   } catch (err) {
     await User.findByIdAndDelete(newUser._id);
