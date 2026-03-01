@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import styles from "./FeaturesContent.module.css";
 
@@ -26,10 +26,25 @@ const FEATURES = [
 ];
 
 export default function FeaturesContent() {
-  const [mounted, setMounted] = useState(false);
+  const [cardsVisible, setCardsVisible] = useState(false);
+  const [modesVisible, setModesVisible] = useState(false);
+  const cardsRef = useRef(null);
+  const modesRef = useRef(null);
 
   useEffect(() => {
-    setMounted(true);
+    const opts = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
+    const cardsOb = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) setCardsVisible(true);
+    }, opts);
+    const modesOb = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) setModesVisible(true);
+    }, opts);
+    if (cardsRef.current) cardsOb.observe(cardsRef.current);
+    if (modesRef.current) modesOb.observe(modesRef.current);
+    return () => {
+      cardsOb.disconnect();
+      modesOb.disconnect();
+    };
   }, []);
 
   return (
@@ -47,12 +62,12 @@ export default function FeaturesContent() {
       </div>
 
       <div className={styles.container}>
-        <section className={styles.featuresSection}>
+        <section ref={cardsRef} className={styles.featuresSection}>
           <div className={styles.features}>
             {FEATURES.map((f, i) => (
               <article
                 key={f.id}
-                className={`${styles.card} ${mounted ? styles.cardVisible : ""}`}
+                className={`${styles.card} ${cardsVisible ? styles.cardVisible : ""}`}
                 style={{ transitionDelay: `${i * 120}ms` }}
               >
                 <span className={styles.icon}>{f.icon}</span>
@@ -63,7 +78,7 @@ export default function FeaturesContent() {
           </div>
         </section>
 
-        <section className={`${styles.modesSection} ${mounted ? styles.modesVisible : ""}`}>
+        <section ref={modesRef} className={`${styles.modesSection} ${modesVisible ? styles.modesVisible : ""}`}>
           <h2 className={styles.modesTitle}>Strict & Search Modes</h2>
           <p className={styles.modesIntro}>
             Switch between two answer modes in chat to control how the AI uses your knowledge base.

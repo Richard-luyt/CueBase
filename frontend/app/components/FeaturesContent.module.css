@@ -153,6 +153,15 @@
 .modesImageCol {
   border-radius: 12px;
   overflow: hidden;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.modesSection.modesVisible .modesImageCol {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.05s;
 }
 
 .modesImage {
@@ -196,6 +205,22 @@
   background: #272727;
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.12);
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.2s;
+}
+
+.modesSection.modesVisible .modeBlock {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.modesSection.modesVisible .modeBlock:nth-child(1) {
+  transition-delay: 0.15s;
+}
+
+.modesSection.modesVisible .modeBlock:nth-child(2) {
+  transition-delay: 0.3s;
 }
 
 .modeLabel {
