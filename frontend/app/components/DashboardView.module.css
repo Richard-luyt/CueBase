@@ -39,11 +39,38 @@
   opacity: 0.85;
 }
 
-.logoImg {
-  display: block;
-  height: 40px;
-  width: auto;
-  object-fit: contain;
+.logo {
+  display: inline-block;
+  font-size: 1.50rem;
+  font-weight: 400;
+  letter-spacing: 0.00em;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.logoCue,
+.logoAse {
+  color: #fff;
+}
+
+.logoB {
+  color: #e7ae8a;
+  position: relative;
+  display: inline-block;
+}
+
+.logoArrow {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translateX(-50%);
+  font-size: 0.75em;
+  margin-bottom: -0.66em;
+  color: #e7ae8a;
+}
+
+.logoCursor {
+  color: #fff;
 }
 
 .sidebarBox {

@@ -84,7 +84,7 @@
 }
 
 .logoB {
-  color: #ffa3c7;
+  color: #e7ae8a;
   position: relative;
   display: inline-block;
 }
@@ -96,7 +96,7 @@
   transform: translateX(-50%);
   font-size: 0.75em;
   margin-bottom: -0.66em;
-  color: #ffa3c7;
+  color: #e7ae8a;
 }
 
 .logoCursor {
@@ -134,7 +134,7 @@
 .cueHighlight {
   display: inline-block;
   color: #000000;
-  background: #ffa3c7;
+  background: #e7ae8a;
   padding: 0.15em 0.5em;
   border-radius: 8px;
   margin-left: 0.15em;
@@ -273,7 +273,7 @@
   font-weight: 600;
   color: #fff;
   background: #3a3a3a;
-  border: 2px solid #ffa3c7;
+  border: 2px solid #e7ae8a;
   border-radius: 10px;
   cursor: pointer;
   width : 100%;
@@ -283,7 +283,7 @@
 
 .submit:hover:not(:disabled) {
   background: #353535;
-  border: 2px solid #bd7993;
+  border: 2px solid #bd9b79;
   border-radius: 10px;
   transition: background 0.2s, opacity 0.2s;
 }
@@ -305,7 +305,7 @@
   margin-top: 0.25rem;
   width: 1.1rem;
   height: 1.1rem;
-  accent-color: #ffa3c7;
+  accent-color: #e7ae8a;
   cursor: pointer;
   flex-shrink: 0;
 }
@@ -318,7 +318,7 @@
 }
 
 .agreeLink {
-  color: #ffa3c7;
+  color: #e7ae8a;
   text-decoration: none;
   font-weight: 500;
 }

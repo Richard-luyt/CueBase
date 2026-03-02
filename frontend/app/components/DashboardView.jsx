@@ -65,7 +65,15 @@ export default function DashboardView({ user, onLogout }) {
           className={styles.logoBtn}
           aria-label="Home"
         >
-          <img src="/images/logo.png" alt="CueBase" className={styles.logoImg} />
+          <span className={styles.logo} aria-hidden="true">
+            <span className={styles.logoCue}>Cue</span>
+            <span className={styles.logoB}>
+              <span className={styles.logoArrow} aria-hidden="true">→</span>
+              B
+            </span>
+            <span className={styles.logoAse}>ase</span>
+            <span className={styles.logoCursor}>_</span>
+          </span>
         </button>
         <div className={styles.sidebarBox}>
           <div className={styles.userBlock}>

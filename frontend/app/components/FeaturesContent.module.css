@@ -20,7 +20,7 @@
 }
 
 .accent {
-  color: #ffa3c7;
+  color: #e7ae8a;
 }
 
 .heroSub {
@@ -38,16 +38,16 @@
   font-size: 1rem;
   font-weight: 600;
   color: #000;
-  background: #ffa3c7;
-  border: 2px solid #ffa3c7;
+  background: #e7ae8a;
+  border: 2px solid #e7ae8a;
   border-radius: 10px;
   text-decoration: none;
   transition: background 0.2s, border-color 0.2s, transform 0.2s;
 }
 
 .cta:hover {
-  background: #bd7993;
-  border-color: #bd7993;
+  background: #da9c76;
+  border-color: #da9c76;
   transform: translateY(-2px);
 }
 
@@ -227,7 +227,7 @@
   font-size: 1.3rem;
   font-weight: 600;
   margin: 0 0 0.5rem;
-  color: #ffa3c7;
+  color: #e7ae8a;
 }
 
 .modeDesc {

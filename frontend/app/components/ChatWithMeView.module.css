@@ -20,8 +20,8 @@
 }
 
 .page[data-mode="strict"] {
-  --model-avatar: #db2b8a;
-  --input-bar-ring: #db2b8a;
+  --model-avatar: #e69d70;
+  --input-bar-ring: #e69d70;
 }
 
 .page[data-mode="search"] {
@@ -208,7 +208,7 @@
 }
 
 .modeBtn[aria-pressed="true"] {
-  background: #db2b8a;
+  background: #e69d70;
 }
 
 .modeBtn[aria-pressed="false"] {
