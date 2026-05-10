@@ -1,4 +1,4 @@
-# CueBase
+# CueBase.online
 
 **CueBase** is a personal knowledge base with document Q&A: users upload PDFs, the backend parses them into chunks, generates embeddings with **Google Gemini**, and stores text **encrypted at rest**. The frontend authenticates with **JWTs in HttpOnly cookies** and chats with an AI in **strict mode (documents only)** or **search mode (documents first, general knowledge when helpful)**. Production-oriented config references **`cuebase.online`**.
 
@@ -75,7 +75,7 @@ npm start
 
 Ensure the **`uploads/`** directory exists and is writable (Multer disk storage in `documentRoutes`).
 
-### Main frontend (`frontend`)
+### frontend (`frontend`)
 
 ```bash
 cd frontend
@@ -87,17 +87,6 @@ npm run dev
 ```
 
 `app/lib/api.js` defaults `API_BASE` to `http://localhost:8000/api`, matching the `/api` mount on the server.
-
-### Alternate frontend (`B1`)
-
-```bash
-cd B1
-npm install
-npm run dev
-# Typically http://localhost:5173 — must be allowed by backend CORS
-```
-
-`B1/README.md` is still the stock Vite template; it does not describe this product.
 
 ## API overview (`B2`)
 
