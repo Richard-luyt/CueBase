@@ -37,6 +37,8 @@ const Divide = async (TextFile, ID, userID) => {
     let text : string =  TextFile.substring(i, Math.min(i + 1500, TextFile.length));
     testString[countChunk] = text;
     countChunk++;
+
+    
     // const embeddingResult = await Embedding(text);
     // const newChunk = {
     //   BelongDocument: ID,
